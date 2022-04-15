@@ -3,63 +3,11 @@
 {% block content %}
 
 <script type="text/javascript">
-    // get the matching data 
-    let lesson = {{lesson|tojson}}
-    
-    function display_your_hand(your_hand, clickable_card){
-        your_hand.forEach(function(card, index){
-            let num = card[0]
-            let suit = card[1]
-            let card_added = $("<div>" + num + suit + "</div>")
-
-            //if the card is the next button, then we add this to the card
-            if (clickable_card != null && clickable_card == index) {
-                card_added.on("click", function(event){
-                    if ("{{lesson.next_lesson}}" == "end"){
-                        window.location.href = "quiz/1"
-                    }
-                    else {
-                        window.location.href = "/learn/{{lesson.next_lesson}}"
-                    }
-                })
-            }
-
-            $("#your_hand").append(card_added)
-        })
-
-    }
-    
-    function display_continue_button(cont){
-        //display the continue button and add a click handler if it exists
-        console.log(cont)
-        if (cont == 1) {
-            new_button = $("<button> Continue </button>")
-            new_button.on("click", function(event){
-                    if ("{{lesson.next_lesson}}" == "end"){
-                        window.location.href = "quiz/1"
-                    }
-                    else {
-                        window.location.href = "/learn/{{lesson.next_lesson}}"
-                    }
-             })
-             $("#continue_button").append(new_button)
-             
-        }
-    }
-
-    $(document).ready(function(){
-        console.log(lesson)
-
-        display_your_hand(lesson.your_hand, lesson.clickable_card)
-        display_continue_button(lesson.continue)
-        //let text = $("<div class = 'link' data-id='" + id + "'>" + title + "<br>" + author + "<br>" + genres + "</div>")
-
-        //$("#test").append(lesson)
-    })
-
+    const _init = {{init|tojson}}
 </script>
+<script type="text/javascript" src="{{ url_for('static', filename = 'play.js') }}"></script>
 
-<div id="text">{{lesson.text}}</div>
+<div id="text"></div>
 <div id = "your_hand"></div>
 <div id = "continue_button"></div>
 {% endblock %}
