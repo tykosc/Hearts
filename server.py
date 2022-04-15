@@ -268,14 +268,14 @@ lesson_states = {
       "text": "Player 1 takes the trick and 13 points. That’ll show them!",
       "next_state": "520"
    }, 
-    "520": {
-      "action": "continue",
-      "next_state": "530"
-   }, 
-   "530": {
+   "520": {
       "action": "take_trick", 
-      "next_state": "540"
+      "next_state": "530"
    },
+     "530": {
+      "action": "continue",
+      "next_state": "540"
+   }, 
    "540": {
       "action": "clear_text", 
       "next_state" : "550"
