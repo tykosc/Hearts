@@ -107,6 +107,7 @@ function displayContinueButton(){
     }
     )
     $("#sidebar").append(b)
+}
 function takeTrickState() {
     // current_player is guaranteed to be the player who led this trick
     let led_suit = played_cards[current_player][1]
