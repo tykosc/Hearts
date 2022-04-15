@@ -53,9 +53,34 @@ lesson_states = {
    },
    "40": {
       "action": "play_card",
-      "card": ("A", "c"),
-      "next_state": "done",
+      "card": ("J", "c"),
+      "next_state": "50",
    },
+   "50": {
+      "action": "play_card",
+      "card": ("A", "c"),
+      "next_state": "60",
+   },
+   "60": {
+      "action": "play_card",
+      "card": ("Q", "c"),
+      "next_state": "70",
+   },
+    "70": {
+      "action": "set_text",
+      "text": "Each player, moving clockwise, plays a card. Player 2 has the highest card, so they take the trick.",
+      "next_state": "80",
+   },
+   "80": {
+      "action": "continue",
+      "next_state": "90"
+   },
+   "90": {
+      "action": "take_trick",
+      "text": "got here!",
+      "next_state": "done",
+
+   }
 }
 
 time_entered_page = []

@@ -83,6 +83,19 @@ function playCardState() {
     nextState()
 }
 
+function continueState(){
+    displayContinueButton()
+}
+
+function displayContinueButton(){
+    b = $("<button> Continue </button>")
+    b.click(function(){
+        nextState()
+    }
+    )
+    $("#sidebar").append(b)
+}
+
 function processState() {
     next_state = state.next_state
     switch (state.action) {
@@ -90,6 +103,7 @@ function processState() {
         case "click_card": clickCardState(); break;
         case "play_card": playCardState(); break;
         case "clear_text": clearTextState(); break;
+        case "continue": continueState(); break; 
         default: console.error(`unknown state action ${state.action}`); break;
     }
 }
