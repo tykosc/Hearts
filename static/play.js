@@ -8,41 +8,62 @@ let current_player = parseInt(_init.current_player)
 let next_state = _init.start_state
 let state = {}
 
-function create_card(rank, suit) {
-    card_div = $(`<div>${rank}${suit}</div>`)
+function playerName(index) {
+    if (index == 0) return "you"
+    return `player ${index}`
+}
+
+function createCard(rank, suit) {
+    card_div = $(`<span style="margin:3px">${rank}${suit}</span>`)
     card_div.data("rank", rank)
     card_div.data("suit", suit)
     card_div.click(onCardClicked)
     return card_div
 }
 
-function display_your_hand() {
+function displayYourHand() {
+    $("#your_hand").empty()
+
     your_hand.forEach(function(card, _){
         let rank = card[0]
         let suit = card[1]
-        let card_added = create_card(rank, suit)
+        let card_added = createCard(rank, suit)
         $("#your_hand").append(card_added)
     })
 }
 
-function findCardInHand(rank, suit) {
-    let out = null
-    $("#your_hand").children().each(function(_) {
-        if ($(this).data("rank") == rank && $(this).data("suit") == suit) {
-            out = $(this) 
-            return false // break
+function displayPlayedCards() {
+    $("#played_cards").empty()
+
+    played_cards.forEach(function(card, idx) {
+        played_row = $("<div>")
+        played_row.append($("<span>").text(playerName(idx) + ": "))
+        if (card != null) {
+            played_row.append($("<span>").text(`${card[0]}${card[1]}`))
         }
+        $("#played_cards").append(played_row)
     })
-    return out
+}
+
+function displayPoints() {
+    $("#points").empty()
+
+    points.forEach(function(pt, idx) {
+        points_row = $("<div>")
+        points_row.append($("<span>").text(playerName(idx) + ": "))
+        points_row.append($("<span>").text(pt))
+
+        $("#points").append(points_row)
+    })
 }
 
 function setTextState() {
-    $("#text").text(state.text)
+    $("#sidebar").text(state.text)
     nextState()
 }
 
 function clearTextState() {
-    $("#text").text("")
+    $("#sidebar").text("")
     nextState()
 }
 
@@ -52,12 +73,12 @@ function clickCardState() {
 
 function playCardState() {
     if (current_player == 0) {
-        card = findCardInHand(state.card[0], state.card[1])
-        card.remove()
+        your_hand.splice(your_hand.indexOf(state.card), 1)
+        displayYourHand()
     }
-    else {
-        // ...
-    }
+    played_cards[current_player] = state.card
+    displayPlayedCards()
+
     current_player = (current_player + 1) % 4
     nextState()
 }
@@ -78,7 +99,7 @@ function nextState() {
         console.log("done")
         return
     }
-
+    
     $.ajax({
         type: "POST",
         url: "/fetch_state",           
@@ -118,7 +139,9 @@ function onCardClicked() {
 
 // Entry point
 function ready() {
-    display_your_hand()
+    displayYourHand()
+    displayPlayedCards()
+    displayPoints()
     nextState()
 }
 $(ready)

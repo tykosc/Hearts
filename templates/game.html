@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<script type="text/javascript">
+    const _init = {{init|tojson}}
+</script>
+<script type="text/javascript" src="{{ url_for('static', filename = 'play.js') }}"></script>
+
+<div class="row">
+
+    <div class="col-4">
+        <div id="sidebar">
+            <!-- Explanatory text, buttons, questions go here -->
+        </div>
+    </div>
+
+    <div class="col-8">
+        <div id="game-content">
+            <!-- Game content goes here -->
+            <div><b>Played cards:</b></div>
+            <div id = "played_cards"></div>
+            <div><b>Your hand:</b></div>
+            <div id = "your_hand"></div>
+            <div><b>Points:</b></div>
+            <div id="points"> </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
