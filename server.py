@@ -274,8 +274,16 @@ lesson_states = {
    }, 
    "530": {
       "action": "take_trick", 
-      "next_state": "done"
-   }
+      "next_state": "540"
+   },
+   "540": {
+      "action": "clear_text", 
+      "next_state" : "550"
+   },
+   "550": {
+      "action": "clear_screen", 
+      "next_state": "done", 
+   },
 
 
 

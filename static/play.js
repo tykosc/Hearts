@@ -154,13 +154,19 @@ function processState() {
         case "play_card": playCardState(); break;
         case "continue": continueState(); break; 
         case "take_trick": takeTrickState(); break;
+        case "clear_screen": clearScreenState(); break;
         default: console.error(`unknown state action ${state.action}`); break;
     }
+}
+
+function clearScreenState(){
+    $("#game-content").empty()
 }
 
 function nextState() {
     if (next_state == "done") {
         console.log("done")
+        window.location.href()
         return
     }
     
