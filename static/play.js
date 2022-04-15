@@ -13,6 +13,19 @@ function playerName(index) {
     return `player ${index}`
 }
 
+// Gets an ordered, numeric rank from a string rank.
+// Notice that Ace is 14, NOT 1.
+function numericRank(string_rank) {
+    switch (string_rank) {
+        case "A": return 14
+        case "K": return 13
+        case "Q": return 12
+        case "J": return 11
+        default:
+            return parseInt(string_rank)
+    }
+}
+
 function createCard(rank, suit) {
     card_div = $(`<span style="margin:3px">${rank}${suit}</span>`)
     card_div.data("rank", rank)
@@ -83,13 +96,48 @@ function playCardState() {
     nextState()
 }
 
+function takeTrickState() {
+    // current_player is guaranteed to be the player who led this trick
+    let led_suit = played_cards[current_player][1]
+    let best_rank = 0
+    let best_idx = -1
+    let trick_points = 0
+    played_cards.forEach(function(card, idx) {
+        let rank = card[0]
+        let suit = card[1]
+
+        if (suit == led_suit) {
+            let nrank = numericRank(rank)
+            if (nrank > best_rank) {
+                best_rank = nrank
+                best_idx = idx
+            }
+        }
+        if (suit == "h") {
+            trick_points ++
+        }
+        else if (suit == "s" && rank == "Q") {
+            trick_points += 13
+        }
+    })
+
+    // player that took the trick has the lead
+    current_player = best_idx
+    points[current_player] += trick_points
+    played_cards = [null, null, null, null]
+
+    displayPlayedCards()
+    displayPoints()
+}
+
 function processState() {
     next_state = state.next_state
     switch (state.action) {
         case "set_text": setTextState(); break;
+        case "clear_text": clearTextState(); break;
         case "click_card": clickCardState(); break;
         case "play_card": playCardState(); break;
-        case "clear_text": clearTextState(); break;
+        case "take_trick": takeTrickState(); break;
         default: console.error(`unknown state action ${state.action}`); break;
     }
 }
