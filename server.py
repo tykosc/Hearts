@@ -293,6 +293,9 @@ lesson_states = {
 
 }
 
+# stores the answer to an active question
+answer = {}
+
 time_entered_page = []
 
 quiz_answers = []
@@ -309,11 +312,24 @@ def learn():
    return render_template('game.html', init=lesson_init)
 
 # AJAX ROUTES
+def preprocess(state):
+   if state["action"] == "mc_question":
+      answer["correct"] = state["correct"]
+      state["correct"] = None
+      answer["explanation"] = state["explanation"]
+      state["explanation"] = None
+   return state
+
 @app.route('/fetch_state', methods=["POST"])
 def fetch_state():
    req = request.get_json()
 
-   return jsonify(lesson_states[req])
+   return jsonify(preprocess(lesson_states[req]))
+
+@app.route('/submit_answer', methods=["POST"])
+def submit_answer():
+   ans = request.get_json()
+   return jsonify(answer)
 
 if __name__ == '__main__':
    app.run(debug = True)

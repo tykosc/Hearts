@@ -7,6 +7,7 @@ let points = _init.points
 let current_player = parseInt(_init.current_player)
 let next_state = _init.start_state
 let state = {}
+let question = {}
 
 function playerName(index) {
     if (index == 0) return "you"
@@ -145,6 +146,42 @@ function takeTrickState() {
     nextState()
 }
 
+function drawMultipleChoiceQuestion(answer=null) {
+    $("#sidebar").empty()
+
+    $("#sidebar").text(state.prompt)
+    state.choices.forEach(function(choice, index) {
+        let choice_div = $("<div>")
+        choice_div.text(choice)
+        if (answer == null) {
+            choice_div.click(() => multipleChoiceResponse(index))
+        }
+        else {
+            if (index == answer.correct) {
+                choice_div.text(choice + " (correct)")
+            }
+            else if (index == question.response) {
+                choice_div.text(choice + " (your answer)")
+            }
+        }
+        $("#sidebar").append(choice_div)
+    })
+
+    if (answer != null) {
+        $("#sidebar").append($("<div>").text(answer.explanation))
+        displayContinueButton()
+    }
+}
+
+function multipleChoiceState() {
+    question = {
+        prompt: state.prompt,
+        choices: state.choices,
+        response: null
+    }
+    drawMultipleChoiceQuestion()
+}
+
 function processState() {
     next_state = state.next_state
     switch (state.action) {
@@ -155,6 +192,7 @@ function processState() {
         case "continue": continueState(); break; 
         case "take_trick": takeTrickState(); break;
         case "clear_screen": clearScreenState(); break;
+        case "mc_question": multipleChoiceState(); break;
         default: console.error(`unknown state action ${state.action}`); break;
     }
 }
@@ -205,6 +243,29 @@ function onCardClicked() {
         default:
             break;
     }
+}
+
+function multipleChoiceResponse(index) {
+    question.response = index
+
+    $.ajax({
+        type: "POST",
+        url: "/submit_answer",           
+        dataType : "json",
+        contentType: "application/json; charset=utf-8",
+        data : JSON.stringify(index),
+        success: function(result){
+            let answer = result
+            answer.correct = parseInt(answer.correct)
+            drawMultipleChoiceQuestion(answer)
+        },
+        error: function(request, status, error){
+            console.log("Error");
+            console.log(request)
+            console.log(status)
+            console.log(error)
+        }
+    })
 }
 
 // Entry point
