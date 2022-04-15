@@ -77,7 +77,6 @@ lesson_states = {
    },
    "90": {
       "action": "take_trick",
-      "text": "got here!",
       "next_state": "done",
 
    }
