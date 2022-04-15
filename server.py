@@ -77,8 +77,21 @@ lesson_states = {
    },
    "90": {
       "action": "take_trick",
-      "next_state": "done",
-
+      "next_state": "100",
+   }, 
+   "100": {
+      "action": "set_text",
+      "text": " Because Player 2 took the last trick, they lead the next trick by playing a card.",
+      "next_state": "110",
+   },
+   "110": {
+      "action": "continue", 
+      "next_state": "120",
+   },
+   "120": {
+      "action": "play_card",
+      "card": ("7", "s"),
+      "next_state": "done"
    }
 }
 

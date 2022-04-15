@@ -103,10 +103,12 @@ function continueState(){
 function displayContinueButton(){
     b = $("<button> Continue </button>")
     b.click(function(){
+        //remove the button 
+        $("#continue").empty()
         nextState()
     }
     )
-    $("#sidebar").append(b)
+    $("#continue").append(b)
 }
 function takeTrickState() {
     // current_player is guaranteed to be the player who led this trick
@@ -140,6 +142,7 @@ function takeTrickState() {
 
     displayPlayedCards()
     displayPoints()
+    nextState()
 }
 
 function processState() {
