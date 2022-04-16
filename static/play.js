@@ -27,11 +27,11 @@ function numericRank(string_rank) {
     }
 }
 
-function createCard(rank, suit) {
+function createCard(rank, suit, handler) {
     card_div = $(`<span style="margin:3px">${rank}${suit}</span>`)
     card_div.data("rank", rank)
     card_div.data("suit", suit)
-    card_div.click(onCardClicked)
+    card_div.click(handler)
     return card_div
 }
 
@@ -41,19 +41,23 @@ function displayYourHand() {
     your_hand.forEach(function(card, _){
         let rank = card[0]
         let suit = card[1]
-        let card_added = createCard(rank, suit)
+        let card_added = createCard(rank, suit, onCardInHandClicked)
         $("#your_hand").append(card_added)
     })
 }
 
-function displayPlayedCards() {
+function displayPlayedCards(highlight_selector=null) {
     $("#played_cards").empty()
 
     played_cards.forEach(function(card, idx) {
         played_row = $("<div>")
         played_row.append($("<span>").text(playerName(idx) + ": "))
         if (card != null) {
-            played_row.append($("<span>").text(`${card[0]}${card[1]}`))
+            let card_added = createCard(card[0], card[1], onCardInPlayClicked).data("player", idx)
+            if (highlight_selector != null) {
+                card_added.addClass(highlight_selector(card, idx))
+            }
+            played_row.append(card_added)
         }
         $("#played_cards").append(played_row)
     })
@@ -182,6 +186,32 @@ function multipleChoiceState() {
     drawMultipleChoiceQuestion()
 }
 
+function trickQuestionHighlightSelector (answer, card, idx) {
+    let str = idx.toString()
+    if (str == answer.correct) return "correct"
+    if (str == question.response) return "incorrect"
+    return ""
+}
+
+function drawTakeTrickQuestion(answer=null) {
+    $("#sidebar").empty()
+
+    $("#sidebar").text("Click the card that takes this trick.")
+    if (answer != null) {
+        $("#sidebar").append($("<div>").text(answer.explanation))
+        displayContinueButton()
+
+        displayPlayedCards((card, idx) => trickQuestionHighlightSelector(answer, card, idx))
+    }
+}
+
+function takeTrickQuestionState() {
+    question = {
+        response: null
+    }
+    drawTakeTrickQuestion()
+}
+
 function processState() {
     next_state = state.next_state
     switch (state.action) {
@@ -193,6 +223,7 @@ function processState() {
         case "take_trick": takeTrickState(); break;
         case "clear_screen": clearScreenState(); break;
         case "mc_question": multipleChoiceState(); break;
+        case "trick_question": takeTrickQuestionState(); break;
         default: console.error(`unknown state action ${state.action}`); break;
     }
 }
@@ -228,7 +259,7 @@ function nextState() {
 }
 
 /** CALLBACKS **/
-function onCardClicked() {
+function onCardInHandClicked() {
     if (state == {}) return
 
     let rank = $(this).data("rank")
@@ -239,6 +270,20 @@ function onCardClicked() {
             if (state.card[0] == rank && state.card[1] == suit) {
                 nextState()
             }
+            break;
+        default:
+            break;
+    }
+}
+
+function onCardInPlayClicked() {
+    if (state == {}) return
+
+    switch (state.action) {
+        case "trick_question":
+            if (question.response != null) return
+
+            takeTrickResponse($(this).data("player"))
             break;
         default:
             break;
@@ -258,6 +303,28 @@ function multipleChoiceResponse(index) {
             let answer = result
             answer.correct = parseInt(answer.correct)
             drawMultipleChoiceQuestion(answer)
+        },
+        error: function(request, status, error){
+            console.log("Error");
+            console.log(request)
+            console.log(status)
+            console.log(error)
+        }
+    })
+}
+
+function takeTrickResponse(index) {
+    question.response = index
+
+    $.ajax({
+        type: "POST",
+        url: "/submit_answer",           
+        dataType : "json",
+        contentType: "application/json; charset=utf-8",
+        data : JSON.stringify(index),
+        success: function(result){
+            let answer = result
+            drawTakeTrickQuestion(answer)
         },
         error: function(request, status, error){
             console.log("Error");

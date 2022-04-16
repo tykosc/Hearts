@@ -2,6 +2,7 @@ from flask import Flask
 from flask import render_template
 from flask import Response, request, jsonify
 from itsdangerous import json
+from copy import deepcopy
 app = Flask(__name__)
 
 from learn import *
@@ -26,6 +27,13 @@ def learn():
 # AJAX ROUTES
 def preprocess(state):
    if state["action"] == "mc_question":
+      state = deepcopy(state)
+      answer["correct"] = state["correct"]
+      state["correct"] = None
+      answer["explanation"] = state["explanation"]
+      state["explanation"] = None
+   elif state["action"] == "trick_question":
+      state = deepcopy(state)
       answer["correct"] = state["correct"]
       state["correct"] = None
       answer["explanation"] = state["explanation"]

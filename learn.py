@@ -39,6 +39,33 @@ learn_init = {
 # prompts a multiple choice question. Choices is an array of possible choices, correct is the index of the correct one.
 
 lesson_states = {
+    "trick_ex": {
+        "action": "play_card",
+        "card": ("A", "c"),
+        "next_state": "trick_ex_a",
+    },
+    "trick_ex_a": {
+        "action": "play_card",
+        "card": ("K", "c"),
+        "next_state": "trick_ex_b",
+    },
+    "trick_ex_b": {
+        "action": "play_card",
+        "card": ("Q", "c"),
+        "next_state": "trick_ex_c",
+    },
+    "trick_ex_c": {
+        "action": "play_card",
+        "card": ("J", "c"),
+        "next_state": "trick_ex_q",
+    },
+    "trick_ex_q": {
+        "action": "trick_question",
+        "correct": "0",
+        "explanation": "explanation here",
+        "next_state": "0"
+    },
+
    "0": {
       "action": "set_text",
       "text": "In Hearts, each round (a trick) consists of each player playing one card. The first trick always starts with the two of clubs (♣️). You have this card, so click on it to play it!",
