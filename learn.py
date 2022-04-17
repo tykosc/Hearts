@@ -7,10 +7,12 @@ learn_init = {
    "played_cards": [None, None, None, None],
    # The number of points taken by each player
    "points": [0,0,0,0],
+   # Have hearts been broken?
+   "hearts_broken": False,
    # The current player (0 = you, then 1, 2, 3)
    "current_player": "0",
    # The start state
-   "start_state": "0",
+   "start_state": "trick_ex",
 }
 
 ### ACTIONS ###
@@ -61,8 +63,6 @@ lesson_states = {
     },
     "trick_ex_q": {
         "action": "trick_question",
-        "correct": "0",
-        "explanation": "explanation here",
         "next_state": "0"
     },
 

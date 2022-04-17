@@ -5,3 +5,7 @@
 .incorrect {
     color: red;
 }
+
+.highlight {
+    color: rgb(195, 195, 90);
+}

@@ -4,6 +4,7 @@
 let your_hand = _init.your_hand
 let played_cards = _init.played_cards
 let points = _init.points
+let hearts_broken = _init.hearts_broken
 let current_player = parseInt(_init.current_player)
 let next_state = _init.start_state
 let state = {}
@@ -35,13 +36,16 @@ function createCard(rank, suit, handler) {
     return card_div
 }
 
-function displayYourHand() {
+function displayYourHand(highlight_selector=null) {
     $("#your_hand").empty()
 
-    your_hand.forEach(function(card, _){
+    your_hand.forEach(function(card, idx){
         let rank = card[0]
         let suit = card[1]
-        let card_added = createCard(rank, suit, onCardInHandClicked)
+        let card_added = createCard(rank, suit, onCardInHandClicked).data("index", idx)
+        if (highlight_selector != null) {
+            card_added.addClass(highlight_selector(card, idx))
+        }
         $("#your_hand").append(card_added)
     })
 }
@@ -115,6 +119,11 @@ function displayContinueButton(){
     )
     $("#continue").append(b)
 }
+
+function displaySubmitButton(action) {
+    $("#sidebar").append($("<button>").text("Submit").click(action))
+}
+
 function takeTrickState() {
     // current_player is guaranteed to be the player who led this trick
     let led_suit = played_cards[current_player][1]
@@ -133,6 +142,7 @@ function takeTrickState() {
             }
         }
         if (suit == "h") {
+            hearts_broken = true
             trick_points ++
         }
         else if (suit == "s" && rank == "Q") {
@@ -212,6 +222,39 @@ function takeTrickQuestionState() {
     drawTakeTrickQuestion()
 }
 
+function legalPlayQuestionAnswerSelector(answer, card, idx) {
+    if (answer.correct[idx]) return "correct"
+    if (question.response[idx]) return "incorrect"
+    return ""
+}
+
+function legalPlayQuestionResponseSelector(card, idx) {
+    return question.response[idx] ? "highlight" : ""
+}
+
+function drawLegalPlayQuestion(answer=null) {
+    $("#sidebar").empty()
+
+    $("#sidebar").text("Click ALL the cards that are legal plays.")
+    if (answer != null) {
+        displayYourHand((card, idx) => legalPlayQuestionAnswerSelector(answer, card, idx))
+        $("#sidebar").append($("<div>").text(answer.explanation))
+        displayContinueButton()
+    }
+    else {
+        displayYourHand(legalPlayQuestionResponseSelector)
+        displaySubmitButton(legalPlayResponse)
+    }
+}
+
+function legalPlayQuestionState() {
+    question = {
+        response: Array(your_hand.length).fill(false),
+        submitted: false
+    }
+    drawLegalPlayQuestion()
+}
+
 function processState() {
     next_state = state.next_state
     switch (state.action) {
@@ -224,8 +267,25 @@ function processState() {
         case "clear_screen": clearScreenState(); break;
         case "mc_question": multipleChoiceState(); break;
         case "trick_question": takeTrickQuestionState(); break;
+        case "play_question": legalPlayQuestionState(); break;
         default: console.error(`unknown state action ${state.action}`); break;
     }
+}
+
+function cleanUpState() {
+    switch (state.action) {
+        case "mc_question":
+            $("#sidebar").empty()
+            break;
+        case "trick_question":
+            displayPlayedCards()
+            $("#sidebar").empty()
+            break;
+        case "play_question":
+            displayYourHand()
+            $("#sidebar").empty()
+            break;
+    }  
 }
 
 function clearScreenState(){
@@ -238,6 +298,8 @@ function nextState() {
         window.location.href()
         return
     }
+
+    cleanUpState()
     
     $.ajax({
         type: "POST",
@@ -271,6 +333,11 @@ function onCardInHandClicked() {
                 nextState()
             }
             break;
+        case "play_question":
+            if (question.submitted) return;
+            let index = parseInt($(this).data("index"))
+            question.response[index] = !question.response[index]
+            drawLegalPlayQuestion()
         default:
             break;
     }
@@ -295,7 +362,7 @@ function multipleChoiceResponse(index) {
 
     $.ajax({
         type: "POST",
-        url: "/submit_answer",           
+        url: "/submit_mc_answer",           
         dataType : "json",
         contentType: "application/json; charset=utf-8",
         data : JSON.stringify(index),
@@ -318,13 +385,32 @@ function takeTrickResponse(index) {
 
     $.ajax({
         type: "POST",
-        url: "/submit_answer",           
+        url: "/submit_trick_answer",           
         dataType : "json",
         contentType: "application/json; charset=utf-8",
-        data : JSON.stringify(index),
+        data : JSON.stringify({response: index, played: played_cards, led: current_player}),
         success: function(result){
             let answer = result
             drawTakeTrickQuestion(answer)
+        },
+        error: function(request, status, error){
+            console.log("Error");
+            console.log(request)
+            console.log(status)
+            console.log(error)
+        }
+    })
+}
+
+function legalPlayResponse() {
+    $.ajax({
+        type: "POST",
+        url: "/submit_play_answer",           
+        dataType : "json",
+        contentType: "application/json; charset=utf-8",
+        data : JSON.stringify({response: question.response, hand: your_hand, played: played_cards, hearts_broken: hearts_broken}),
+        success: function(result){
+            drawLegalPlayQuestion(result)
         },
         error: function(request, status, error){
             console.log("Error");
