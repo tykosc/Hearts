@@ -7,6 +7,7 @@ let points = _init.points
 let hearts_broken = _init.hearts_broken
 let current_player = parseInt(_init.current_player)
 let next_state = _init.start_state
+let mode = _init.mode
 let state = {}
 let question = {}
 
@@ -93,7 +94,14 @@ function clickCardState() {
 
 function playCardState() {
     if (current_player == 0) {
-        your_hand.splice(your_hand.indexOf(state.card), 1)
+        let splice_index = -1
+        your_hand.forEach(function(card, idx) {
+            if (card[0] == state.card[0] && card[1] == state.card[1]) {
+                splice_index = idx
+                return false
+            }
+        })
+        your_hand.splice(splice_index, 1)
         displayYourHand()
     }
     played_cards[current_player] = state.card
@@ -288,7 +296,6 @@ function clearScreenState(){
 function nextState() {
     if (next_state == "done") {
         console.log("done")
-        window.location.href()
         return
     }
 
@@ -299,7 +306,7 @@ function nextState() {
         url: "/fetch_state",           
         dataType : "json",
         contentType: "application/json; charset=utf-8",
-        data : JSON.stringify(next_state),
+        data : JSON.stringify({next_state: next_state, mode: mode}),
         success: function(result){
             state = result
             processState()

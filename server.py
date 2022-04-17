@@ -7,6 +7,7 @@ from copy import deepcopy
 app = Flask(__name__)
 
 from learn import *
+from test import *
 
 # stores the answer to an active question, if necessary
 answer = {}
@@ -25,6 +26,10 @@ def home():
 def learn():
    return render_template('game.html', init=learn_init)
 
+@app.route('/test')
+def test():
+   return render_template('game.html', init=test_init)
+
 # AJAX ROUTES
 def preprocess(state):
    if state["action"] == "mc_question":
@@ -39,7 +44,10 @@ def preprocess(state):
 def fetch_state():
    req = request.get_json()
 
-   return jsonify(preprocess(lesson_states[req]))
+   if req["mode"] == "learn":
+      return jsonify(preprocess(lesson_states[req["next_state"]]))
+   else:
+      return jsonify(preprocess(test_states[req["next_state"]]))
 
 @app.route('/submit_mc_answer', methods=["POST"])
 def submit_mc_answer():

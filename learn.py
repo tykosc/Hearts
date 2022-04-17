@@ -11,6 +11,8 @@ learn_init = {
    "hearts_broken": False,
    # The current player (0 = you, then 1, 2, 3)
    "current_player": "0",
+   # Mode
+   "mode": "learn",
    # The start state
    "start_state": "0",
 }
