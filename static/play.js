@@ -29,19 +29,17 @@ function numericRank(string_rank) {
 }
 
 function createCard(rank, suit, handler) {
-    card_div = $(`<span style="margin:3px">${rank}${suit}</span>`)
-    card_div.data("rank", rank)
-    card_div.data("suit", suit)
-    card_div.click(handler)
-    return card_div
+    return $(`<span style="margin:3px">${rank}${suit}</span>`)
+        .data("rank", rank)
+        .data("suit", suit)
+        .click(handler)
 }
 
 function displayYourHand(highlight_selector=null) {
     $("#your_hand").empty()
 
     your_hand.forEach(function(card, idx){
-        let rank = card[0]
-        let suit = card[1]
+        let [rank, suit] = card
         let card_added = createCard(rank, suit, onCardInHandClicked).data("index", idx)
         if (highlight_selector != null) {
             card_added.addClass(highlight_selector(card, idx))
@@ -55,7 +53,7 @@ function displayPlayedCards(highlight_selector=null) {
 
     played_cards.forEach(function(card, idx) {
         played_row = $("<div>")
-        played_row.append($("<span>").text(playerName(idx) + ": "))
+            .append($("<span>").text(playerName(idx) + ": "))
         if (card != null) {
             let card_added = createCard(card[0], card[1], onCardInPlayClicked).data("player", idx)
             if (highlight_selector != null) {
@@ -72,8 +70,8 @@ function displayPoints() {
 
     points.forEach(function(pt, idx) {
         points_row = $("<div>")
-        points_row.append($("<span>").text(playerName(idx) + ": "))
-        points_row.append($("<span>").text(pt))
+            .append($("<span>").text(playerName(idx) + ": "))
+            .append($("<span>").text(pt))
 
         $("#points").append(points_row)
     })
@@ -110,13 +108,14 @@ function continueState(){
 }
 
 function displayContinueButton(){
-    b = $("<button> Continue </button>")
-    b.click(function(){
+    b = $("<button>")
+        .text("Continue")
+        .click(function(){
         //remove the button 
         $("#continue").empty()
         nextState()
-    }
-    )
+    })
+
     $("#continue").append(b)
 }
 
@@ -161,12 +160,10 @@ function takeTrickState() {
 }
 
 function drawMultipleChoiceQuestion(answer=null) {
-    $("#sidebar").empty()
+    $("#sidebar").empty().text(state.prompt)
 
-    $("#sidebar").text(state.prompt)
     state.choices.forEach(function(choice, index) {
-        let choice_div = $("<div>")
-        choice_div.text(choice)
+        let choice_div = $("<div>").text(choice)
         if (answer == null) {
             choice_div.click(() => multipleChoiceResponse(index))
         }
@@ -204,9 +201,7 @@ function trickQuestionHighlightSelector (answer, card, idx) {
 }
 
 function drawTakeTrickQuestion(answer=null) {
-    $("#sidebar").empty()
-
-    $("#sidebar").text("Click the card that takes this trick.")
+    $("#sidebar").empty().text("Click the card that takes this trick.")
     if (answer != null) {
         $("#sidebar").append($("<div>").text(answer.explanation))
         displayContinueButton()
@@ -233,9 +228,7 @@ function legalPlayQuestionResponseSelector(card, idx) {
 }
 
 function drawLegalPlayQuestion(answer=null) {
-    $("#sidebar").empty()
-
-    $("#sidebar").text("Click ALL the cards that are legal plays.")
+    $("#sidebar").empty().text("Click ALL the cards that are legal plays.")
     if (answer != null) {
         displayYourHand((card, idx) => legalPlayQuestionAnswerSelector(answer, card, idx))
         $("#sidebar").append($("<div>").text(answer.explanation))

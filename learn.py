@@ -12,7 +12,7 @@ learn_init = {
    # The current player (0 = you, then 1, 2, 3)
    "current_player": "0",
    # The start state
-   "start_state": "trick_ex",
+   "start_state": "0",
 }
 
 ### ACTIONS ###
