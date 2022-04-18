@@ -53,8 +53,8 @@ function displayPlayedCards(highlight_selector=null) {
     $("#played_cards").empty()
 
     played_cards.forEach(function(card, idx) {
+        $("#played_cards").append($("<span>").text(playerName(idx) + ": "))
         played_row = $("<div class='row'>")
-            .append($("<span>").text(playerName(idx) + ": "))
         if (card != null) {
             let card_added = createCard(card[0], card[1], onCardInPlayClicked).data("player", idx)
             if (highlight_selector != null) {
