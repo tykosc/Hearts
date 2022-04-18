@@ -1,15 +1,15 @@
 // Shared .js file for all interactive displays
 
 // Global variables
-let your_hand = _init.your_hand
-let played_cards = _init.played_cards
-let points = _init.points
-let hearts_broken = _init.hearts_broken
-let current_player = parseInt(_init.current_player)
-let next_state = _init.start_state
-let mode = _init.mode
-let state = {}
-let question = {}
+let your_hand = _init.your_hand                         // List of cards currently in your hand
+let played_cards = _init.played_cards                   // For each player, a card if they have played one, otherwise null
+let points = _init.points                               // For each player, their total points this round
+let hearts_broken = _init.hearts_broken                 // Whether or not hearts have been broken
+let current_player = parseInt(_init.current_player)     // The index of the current player (or who led the current trick if all four cards have been played)
+let next_state = _init.start_state                      // The id of the next state
+let mode = _init.mode                                   // "learn" or "test"
+let state = {}                                          // The currently loaded state
+let question = {}                                       // The currently loaded question, including the response, if any
 
 function playerName(index) {
     if (index == 0) return "you"
@@ -29,6 +29,9 @@ function numericRank(string_rank) {
     }
 }
 
+/*** DRAW FUNCTIONS ***/
+
+// Creates and returns a default card div
 function createCard(rank, suit, handler) {
     return $(`<div class="col-2 card-in-hand" style="margin:3px">${rank}${suit}</div>`)
         .data("rank", rank)
@@ -36,6 +39,8 @@ function createCard(rank, suit, handler) {
         .click(handler)
 }
 
+// Displays your hand, optionally adding classes for highlights using highlight_selector
+// highlight_selector should be a function (card, index) -> class(es) to add
 function displayYourHand(highlight_selector=null) {
     $("#your_hand").empty()
 
@@ -49,6 +54,8 @@ function displayYourHand(highlight_selector=null) {
     })
 }
 
+// Displays the currently played cards, optionally adding classes for highlights using highlight_selector
+// highlight_selector should be a function (card, index) -> class(es) to add
 function displayPlayedCards(highlight_selector=null) {
     $("#played_cards").empty()
 
@@ -66,6 +73,7 @@ function displayPlayedCards(highlight_selector=null) {
     })
 }
 
+// Displays each player's current points
 function displayPoints() {
     $("#points").empty()
 
@@ -78,6 +86,93 @@ function displayPoints() {
     })
 }
 
+function displayContinueButton(){
+    b = $("<button>")
+        .text("Continue")
+        .click(function(){
+        //remove the button 
+        $("#continue").empty()
+        nextState()
+    })
+
+    $("#continue").append(b)
+}
+
+function displaySubmitButton(action) {
+    $("#sidebar").append($("<button>").text("Submit").click(action))
+}
+
+// Draws the multiple choice question in using answer if non-null to mark correct response
+function drawMultipleChoiceQuestion(answer=null) {
+    $("#sidebar").empty().text(state.prompt)
+
+    state.choices.forEach(function(choice, index) {
+        let choice_div = $("<div>").text(choice)
+        if (answer == null) {
+            choice_div.click(() => multipleChoiceResponse(index))
+        }
+        else {
+            if (index == answer.correct) {
+                choice_div.text(choice + " (correct)")
+            }
+            else if (index == question.response) {
+                choice_div.text(choice + " (your answer)")
+            }
+        }
+        $("#sidebar").append(choice_div)
+    })
+
+    if (answer != null) {
+        $("#sidebar").append($("<div>").text(answer.explanation))
+        displayContinueButton()
+    }
+}
+
+function trickQuestionHighlightSelector (answer, card, idx) {
+    let str = idx.toString()
+    if (str == answer.correct) return "correct"
+    if (str == question.response) return "incorrect"
+    return ""
+}
+
+// Draws the take trick question in using answer if non-null to mark correct response
+function drawTakeTrickQuestion(answer=null) {
+    $("#sidebar").empty().text("Click the card that takes this trick.")
+    if (answer != null) {
+        $("#sidebar").append($("<div>").text(answer.explanation))
+        displayContinueButton()
+
+        displayPlayedCards((card, idx) => trickQuestionHighlightSelector(answer, card, idx))
+    }
+}
+
+function legalPlayQuestionAnswerSelector(answer, card, idx) {
+    if (answer.correct[idx]) return "correct"
+    if (question.response[idx]) return "incorrect"
+    return ""
+}
+
+function legalPlayQuestionResponseSelector(card, idx) {
+    return question.response[idx] ? "highlight" : ""
+}
+
+// Draws the legal play question in using answer if non-null to mark correct response
+function drawLegalPlayQuestion(answer=null) {
+    $("#sidebar").empty().text("Click ALL the cards that are legal plays.")
+    if (answer != null) {
+        displayYourHand((card, idx) => legalPlayQuestionAnswerSelector(answer, card, idx))
+        $("#sidebar").append($("<div>").text(answer.explanation))
+        displayContinueButton()
+    }
+    else {
+        displayYourHand(legalPlayQuestionResponseSelector)
+        displaySubmitButton(legalPlayResponse)
+    }
+}
+
+/*** PROCESS STATE ***/
+// Each of these functions performs setup for a certain state, and calls nextState() if applicable
+
 function setTextState() {
     $("#sidebar").text(state.text)
     nextState()
@@ -89,7 +184,7 @@ function clearTextState() {
 }
 
 function clickCardState() {
-    // setup here
+    // Could add setup here if needed
 }
 
 function playCardState() {
@@ -115,28 +210,14 @@ function continueState(){
     displayContinueButton()
 }
 
-function displayContinueButton(){
-    b = $("<button>")
-        .text("Continue")
-        .click(function(){
-        //remove the button 
-        $("#continue").empty()
-        nextState()
-    })
-
-    $("#continue").append(b)
-}
-
-function displaySubmitButton(action) {
-    $("#sidebar").append($("<button>").text("Submit").click(action))
-}
-
 function takeTrickState() {
     // current_player is guaranteed to be the player who led this trick
     let led_suit = played_cards[current_player][1]
     let best_rank = 0
     let best_idx = -1
     let trick_points = 0
+
+    // Add up points taken and determine who took the trick
     played_cards.forEach(function(card, idx) {
         let rank = card[0]
         let suit = card[1]
@@ -167,31 +248,6 @@ function takeTrickState() {
     nextState()
 }
 
-function drawMultipleChoiceQuestion(answer=null) {
-    $("#sidebar").empty().text(state.prompt)
-
-    state.choices.forEach(function(choice, index) {
-        let choice_div = $("<div>").text(choice)
-        if (answer == null) {
-            choice_div.click(() => multipleChoiceResponse(index))
-        }
-        else {
-            if (index == answer.correct) {
-                choice_div.text(choice + " (correct)")
-            }
-            else if (index == question.response) {
-                choice_div.text(choice + " (your answer)")
-            }
-        }
-        $("#sidebar").append(choice_div)
-    })
-
-    if (answer != null) {
-        $("#sidebar").append($("<div>").text(answer.explanation))
-        displayContinueButton()
-    }
-}
-
 function multipleChoiceState() {
     question = {
         prompt: state.prompt,
@@ -201,51 +257,11 @@ function multipleChoiceState() {
     drawMultipleChoiceQuestion()
 }
 
-function trickQuestionHighlightSelector (answer, card, idx) {
-    let str = idx.toString()
-    if (str == answer.correct) return "correct"
-    if (str == question.response) return "incorrect"
-    return ""
-}
-
-function drawTakeTrickQuestion(answer=null) {
-    $("#sidebar").empty().text("Click the card that takes this trick.")
-    if (answer != null) {
-        $("#sidebar").append($("<div>").text(answer.explanation))
-        displayContinueButton()
-
-        displayPlayedCards((card, idx) => trickQuestionHighlightSelector(answer, card, idx))
-    }
-}
-
 function takeTrickQuestionState() {
     question = {
         response: null
     }
     drawTakeTrickQuestion()
-}
-
-function legalPlayQuestionAnswerSelector(answer, card, idx) {
-    if (answer.correct[idx]) return "correct"
-    if (question.response[idx]) return "incorrect"
-    return ""
-}
-
-function legalPlayQuestionResponseSelector(card, idx) {
-    return question.response[idx] ? "highlight" : ""
-}
-
-function drawLegalPlayQuestion(answer=null) {
-    $("#sidebar").empty().text("Click ALL the cards that are legal plays.")
-    if (answer != null) {
-        displayYourHand((card, idx) => legalPlayQuestionAnswerSelector(answer, card, idx))
-        $("#sidebar").append($("<div>").text(answer.explanation))
-        displayContinueButton()
-    }
-    else {
-        displayYourHand(legalPlayQuestionResponseSelector)
-        displaySubmitButton(legalPlayResponse)
-    }
 }
 
 function legalPlayQuestionState() {
@@ -255,6 +271,12 @@ function legalPlayQuestionState() {
     }
     drawLegalPlayQuestion()
 }
+
+function clearScreenState(){
+    $("#game-content").empty()
+}
+
+/*** STATE FLOW ***/
 
 function processState() {
     next_state = state.next_state
@@ -289,12 +311,9 @@ function cleanUpState() {
     }  
 }
 
-function clearScreenState(){
-    $("#game-content").empty()
-}
-
 function done(){
-    window.location.assign('/quiz_end')
+    if(mode == "test")
+        window.location.assign('/quiz_end')
 }
 
 function nextState() {
@@ -362,6 +381,7 @@ function onCardInPlayClicked() {
     }
 }
 
+/*** QUESTION RESPONSE AJAX CALLS ***/
 function multipleChoiceResponse(index) {
     question.response = index
 
@@ -427,7 +447,7 @@ function legalPlayResponse() {
     })
 }
 
-// Entry point
+/*** ENTRY POINT ***/
 function ready() {
     displayYourHand()
     displayPlayedCards()
