@@ -9,3 +9,11 @@
 .highlight {
     color: rgb(195, 195, 90);
 }
+
+.card-in-hand{
+    border: solid black 1px;
+    height: 100px;
+    width: 5px;
+    text-align: center;
+    padding-top: 30px;
+}

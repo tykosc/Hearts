@@ -30,7 +30,7 @@ function numericRank(string_rank) {
 }
 
 function createCard(rank, suit, handler) {
-    return $(`<span style="margin:3px">${rank}${suit}</span>`)
+    return $(`<div class="col-1 card-in-hand" style="margin:3px">${rank}${suit}</div>`)
         .data("rank", rank)
         .data("suit", suit)
         .click(handler)
@@ -53,7 +53,7 @@ function displayPlayedCards(highlight_selector=null) {
     $("#played_cards").empty()
 
     played_cards.forEach(function(card, idx) {
-        played_row = $("<div>")
+        played_row = $("<div class='row'>")
             .append($("<span>").text(playerName(idx) + ": "))
         if (card != null) {
             let card_added = createCard(card[0], card[1], onCardInPlayClicked).data("player", idx)
