@@ -27,3 +27,7 @@
     object-fit: fill;
     width: 100%;
 }
+
+#sidebar{
+    border-right: black solid 1px;
+}
