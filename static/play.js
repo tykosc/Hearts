@@ -30,7 +30,7 @@ function numericRank(string_rank) {
 }
 
 function createCard(rank, suit, handler) {
-    return $(`<div class="col-1 card-in-hand" style="margin:3px">${rank}${suit}</div>`)
+    return $(`<div class="col-2 card-in-hand" style="margin:3px">${rank}${suit}</div>`)
         .data("rank", rank)
         .data("suit", suit)
         .click(handler)

@@ -8,7 +8,7 @@
 
 .highlight {
     color: rgb(195, 195, 90);
-}
+}   
 
 .card-in-hand{
     border: solid black 1px;
@@ -16,4 +16,19 @@
     width: 5px;
     text-align: center;
     padding-top: 30px;
+    cursor: pointer;
+}
+
+.main-title{
+    font-size: 30px;
+    text-align: center;
+}
+
+.main-card-image{
+    object-fit: fill;
+    width: 100%;
+}
+
+#sidebar{
+    border-right: black solid 1px;
 }
