@@ -17,3 +17,13 @@
     text-align: center;
     padding-top: 30px;
 }
+
+.main-title{
+    font-size: 30px;
+    text-align: center;
+}
+
+.main-card-image{
+    object-fit: fill;
+    width: 100%;
+}
