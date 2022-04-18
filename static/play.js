@@ -11,6 +11,9 @@ let mode = _init.mode                                   // "learn" or "test"
 let state = {}                                          // The currently loaded state
 let question = {}                                       // The currently loaded question, including the response, if any
 
+let cardInHandCallback = null                           // What to do if a card in hand is clicked
+let cardInPlayCallback = null                           // What to do if a card in play is clicked
+
 function playerName(index) {
     if (index == 0) return "you"
     return `player ${index}`
@@ -184,7 +187,10 @@ function clearTextState() {
 }
 
 function clickCardState() {
-    // Could add setup here if needed
+    cardInHandCallback = card_div => {
+        // Move to the next state if the card selected is the indicated card
+        if (state.card[0] == card_div.data("rank") && state.card[1] == card_div.data("suit")) nextState();
+    }
 }
 
 function playCardState() {
@@ -258,6 +264,12 @@ function multipleChoiceState() {
 }
 
 function takeTrickQuestionState() {
+    cardInPlayCallback = card_div => {
+        if (question.response != null) return
+        // Submit response
+        takeTrickResponse(card_div.data("player"))
+    }
+
     question = {
         response: null
     }
@@ -265,6 +277,14 @@ function takeTrickQuestionState() {
 }
 
 function legalPlayQuestionState() {
+    cardInHandCallback = card_div => {
+        if (question.submitted) return;
+        // Toggle the state of this card
+        let index = parseInt(card_div.data("index"))
+        question.response[index] = !question.response[index]
+        drawLegalPlayQuestion()
+    }
+
     question = {
         response: Array(your_hand.length).fill(false),
         submitted: false
@@ -296,6 +316,9 @@ function processState() {
 }
 
 function cleanUpState() {
+    cardInHandCallback = null
+    cardInPlayCallback = null
+
     switch (state.action) {
         case "mc_question":
             $("#sidebar").empty()
@@ -346,39 +369,13 @@ function nextState() {
 
 /** CALLBACKS **/
 function onCardInHandClicked() {
-    if (state == {}) return
-
-    let rank = $(this).data("rank")
-    let suit = $(this).data("suit")
-
-    switch (state.action) {
-        case "click_card":
-            if (state.card[0] == rank && state.card[1] == suit) {
-                nextState()
-            }
-            break;
-        case "play_question":
-            if (question.submitted) return;
-            let index = parseInt($(this).data("index"))
-            question.response[index] = !question.response[index]
-            drawLegalPlayQuestion()
-        default:
-            break;
-    }
+    if (cardInHandCallback != null)
+        cardInHandCallback($(this))
 }
 
 function onCardInPlayClicked() {
-    if (state == {}) return
-
-    switch (state.action) {
-        case "trick_question":
-            if (question.response != null) return
-
-            takeTrickResponse($(this).data("player"))
-            break;
-        default:
-            break;
-    }
+    if (cardInPlayCallback != null)
+        cardInPlayCallback($(this))
 }
 
 /*** QUESTION RESPONSE AJAX CALLS ***/
