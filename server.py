@@ -7,6 +7,9 @@ app = Flask(__name__)
 from learn import *
 from test import *
 
+#int of correct anwers from user in quiz
+score = 0
+
 # stores the answer to an active question, if necessary
 answer = {}
 
@@ -27,6 +30,10 @@ def learn():
 @app.route('/test')
 def test():
    return render_template('game.html', init=test_init)
+
+@app.route('/quiz_end')
+def quiz_end():
+   return render_template('quiz_end.html', score = score)
 
 # AJAX ROUTES
 def preprocess(state):
@@ -50,6 +57,9 @@ def fetch_state():
 @app.route('/submit_mc_answer', methods=["POST"])
 def submit_mc_answer():
    ans = request.get_json()
+   if ans == int(answer["correct"]):
+      global score
+      score = score + 1
    return jsonify(answer)
 
 def numeric_rank(rank):
@@ -86,6 +96,10 @@ def submit_trick_answer():
       if n > highest:
          highest = n
          answer["correct"] = str(idx)
+
+   if int(ans["response"]) == int(answer["correct"]):
+      global score
+      score = score + 1
 
    return jsonify(answer)
 
@@ -127,6 +141,16 @@ def submit_play_answer():
             void = False
             break
       answer["correct"] = list(map(lambda card : can_play(card, led_suit, void), hand))
+
+   for x in range(len(answer["correct"])):
+      if answer["correct"][x] ==  ans["response"][x]:
+         isRight = True
+      else:
+         isRight = False
+
+   if isRight:
+      global score
+      score  =  score + 1
 
    return jsonify(answer)
 

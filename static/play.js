@@ -293,9 +293,14 @@ function clearScreenState(){
     $("#game-content").empty()
 }
 
+function done(){
+    window.location.assign('/quiz_end')
+}
+
 function nextState() {
     if (next_state == "done") {
         console.log("done")
+        done()
         return
     }
 
@@ -411,6 +416,7 @@ function legalPlayResponse() {
         data : JSON.stringify({response: question.response, hand: your_hand, played: played_cards, hearts_broken: hearts_broken}),
         success: function(result){
             drawLegalPlayQuestion(result)
+            console.log(jQuery.type(question.response[0]))
         },
         error: function(request, status, error){
             console.log("Error");
