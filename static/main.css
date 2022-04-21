@@ -28,7 +28,13 @@
     object-fit: fill;
     width: 100%;
 }
-
+.bold{
+    font-weight: bold;
+}
+.rule_div{
+    padding: 20px;
+    font-size: larger;
+}
 #sidebar{
     border-right: black solid 1px;
 }

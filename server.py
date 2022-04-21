@@ -31,6 +31,10 @@ def learn():
 def test():
    return render_template('game.html', init=test_init)
 
+@app.route('/rules')
+def rules():
+   return render_template('rules.html')
+
 @app.route('/quiz_end')
 def quiz_end():
    return render_template('quiz_end.html', score = score)

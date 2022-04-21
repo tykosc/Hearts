@@ -318,6 +318,77 @@ lesson_states = {
    },
    "550": {
       "action": "clear_screen", 
-      "next_state": "done", 
+      "next_state": "560", 
    },
+    "560": {
+      "action": "set_text", 
+      "text": " The round ends once everyone has played all of their cards, so after 13 tricks in a four-player game.",
+      "next_state": "570"
+   },
+     "570": {
+      "action": "set_text", 
+      "text": "The game ends when any player reaches some point threshold at the end of a round (e.g., 50 points). Then, the player with the fewest points wins!",
+      "next_state": "580"
+   },
+     "580": {
+      "action": "continue", 
+      "next_state": "590"
+   },
+    "590": {
+      "action": "clear_text", 
+      "next_state": "600"
+   },
+    "600": {
+      "action": "set_text", 
+      "text": " You’re almost ready to play! There are just a few extra rules to cover.",
+      "next_state": "610"
+   },
+     "610": {
+      "action": "continue", 
+      "next_state": "615"
+   },
+   "615":{
+      "action": "clear_text", 
+      "next_state": "620"
+   },
+   "620": {
+      "action": "set_text",
+      "text": " 1. The first round is safe. That means no player can play a heart or the queen of spades, even if they are void in clubs.",
+      "next_state": "630"
+   },
+   "630": {
+      "action": "continue",
+      "next_state": "635"
+   },
+   "635":{
+      "action" : "clear_text",
+      "next_state": "640"
+   },
+   "640": {
+      "action": "set_text",
+      "text": " 2. Hearts cannot be led until hearts have been 'broken,' meaning someone has played a heart on another trick. Playing the queen of spades does not count as breaking hearts.",
+      "next_state": "650"
+   }, 
+   "650": {
+      "action": "continue",
+      "next_state": "660"
+   },
+   "660": {
+      "action": "clear_text",
+      "next_state": "670"
+   }, 
+   "670": {
+      "action": "set_text",
+      "text": "3. In very rare cases, you might find it possible to take all 26 points: thirteen hearts and the queen. This is called shooting the moon.",
+      "next_state": "680"
+   },
+   "680": {
+      "action": "set_text",
+      "text": "If you shoot the moon, instead of gaining 26 points, everyone else gains 26 points!", 
+      "next_state": "690"
+   }, 
+   "690": {
+      "action": "test_me",
+      "next_state": "done"
+   }, 
 }

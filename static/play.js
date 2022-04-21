@@ -294,6 +294,24 @@ function legalPlayQuestionState() {
 
 function clearScreenState(){
     $("#game-content").empty()
+    $("#points").empty()
+    nextState()
+
+}
+
+function testMeState(){
+    displayStateButton()
+}
+
+function displayStateButton(){
+    b = $("<button>")
+    .text("Test Me! ")
+    .click(function(){
+    window.location.href = "/test" 
+})
+
+$("#continue").append(b)
+
 }
 
 /*** STATE FLOW ***/
@@ -311,6 +329,7 @@ function processState() {
         case "mc_question": multipleChoiceState(); break;
         case "trick_question": takeTrickQuestionState(); break;
         case "play_question": legalPlayQuestionState(); break;
+        case "test_me": testMeState(); break;
         default: console.error(`unknown state action ${state.action}`); break;
     }
 }
