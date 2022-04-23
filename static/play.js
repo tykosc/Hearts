@@ -19,6 +19,82 @@ function playerName(index) {
     return `player ${index}`
 }
 
+/*** CARDS & ANIMATION ***/
+
+let card_objects = []
+let cards_animating = 0
+let next_state_deferred = false
+
+function findCardObject(rank, suit) {
+    out_object = null
+    card_objects.forEach(function(obj, _) {
+        if (obj.rank == rank && obj.suit == suit) {
+            out_object = obj
+            return false //break
+        }
+    })
+    return out_object
+}
+
+function createCardObject(rank, suit) {
+    let card_div = $(`<div class="col-2 card-in-hand" style="margin:3px">${rank}${suit}</div>`)
+        .css("position", "relative")
+    return {
+        rank: rank,
+        suit: suit,
+        div: card_div,
+        start: {top: 0, left: 0}
+    }
+}
+
+function deleteCardObject(rank, suit) {
+    del_object = null
+    del_index = 0
+    card_objects.forEach(function(obj, idx) {
+        if (obj.rank == rank && obj.suit == suit) {
+            del_object = obj
+            del_index = idx
+            return false //break
+        }
+    })
+    del_object.div.remove()
+    card_objects.splice(del_index, 1)
+}
+
+// Gets a card object, creating it if necessary. Adds the given click handler
+function getCard(rank, suit, handler) {
+    let card_object = findCardObject(rank, suit)
+    if (card_object == null) {
+        card_object = createCardObject(rank, suit)
+        card_objects.push(card_object)
+    }
+    // Add data (.empty() clears it)
+    card_object.div.data("rank", rank).data("suit", suit)
+
+    // Attach click handler
+    card_object.div.click(handler)
+
+    // Clear highlight classes
+    card_object.div.removeClass("highlight correct incorrect")
+
+    return card_object.div
+}
+
+function cardMoveCompleteAndDelete(card_div) {
+    deleteCardObject(card_div.data('rank'), card_div.data('suit'))
+    cardMoveComplete()
+}
+
+function cardMoveComplete() {
+    cards_animating -= 1
+    if (cards_animating == 0) {
+        if (next_state_deferred) {
+            next_state_deferred = false
+            nextState()
+        }
+    }
+}
+
 // Gets an ordered, numeric rank from a string rank.
 // Notice that Ace is 14, NOT 1.
 function numericRank(string_rank) {
@@ -34,45 +110,63 @@ function numericRank(string_rank) {
 
 /*** DRAW FUNCTIONS ***/
 
-// Creates and returns a default card div
-function createCard(rank, suit, handler) {
-    return $(`<div class="col-2 card-in-hand" style="margin:3px">${rank}${suit}</div>`)
-        .data("rank", rank)
-        .data("suit", suit)
-        .click(handler)
-}
-
 // Displays your hand, optionally adding classes for highlights using highlight_selector
 // highlight_selector should be a function (card, index) -> class(es) to add
-function displayYourHand(highlight_selector=null) {
+function _displayYourHand(highlight_selector=null) {
     $("#your_hand").empty()
 
     your_hand.forEach(function(card, idx){
         let [rank, suit] = card
-        let card_added = createCard(rank, suit, onCardInHandClicked).data("index", idx)
+        // let card_added = createCard(rank, suit, onCardInHandClicked).data("index", idx)
+        let card_div = getCard(rank, suit, onCardInHandClicked).data("index", idx)
         if (highlight_selector != null) {
-            card_added.addClass(highlight_selector(card, idx))
+            card_div.addClass(highlight_selector(card, idx))
         }
-        $("#your_hand").append(card_added)
+        $("#your_hand").append(card_div)
     })
 }
 
 // Displays the currently played cards, optionally adding classes for highlights using highlight_selector
 // highlight_selector should be a function (card, index) -> class(es) to add
-function displayPlayedCards(highlight_selector=null) {
+function _displayPlayedCards(highlight_selector=null) {
     $("#played_cards").empty()
 
     played_cards.forEach(function(card, idx) {
         $("#played_cards").append($("<span>").text(playerName(idx) + ": "))
         played_row = $("<div class='row'>")
         if (card != null) {
-            let card_added = createCard(card[0], card[1], onCardInPlayClicked).data("player", idx)
+            // let card_added = createCard(card[0], card[1], onCardInPlayClicked).data("player", idx)
+            let card_div = getCard(card[0], card[1], onCardInPlayClicked).data("player", idx)
             if (highlight_selector != null) {
-                card_added.addClass(highlight_selector(card, idx))
+                card_div.addClass(highlight_selector(card, idx))
             }
-            played_row.append(card_added)
+            played_row.append(card_div)
         }
         $("#played_cards").append(played_row)
+    })
+}
+
+function drawCards(highlight_selector=null) {
+    card_objects.forEach(function(card_obj, _) {
+        card_obj.start = card_obj.div.offset()
+    })
+
+    _displayYourHand(highlight_selector)
+    _displayPlayedCards(highlight_selector)
+
+    card_objects.forEach(function(card_obj, _) {
+        let start = card_obj.start
+        let end = card_obj.div.offset()
+        let dtop = end.top - start.top
+        let dleft = end.left - start.left
+
+        card_obj.div.offset(start)
+        cards_animating += 1
+        console.log(`anim ${card_obj.rank}${card_obj.suit} ${start.left}, ${start.top} to ${end.left}, ${end.top}`)
+        card_obj.div.animate({
+            left: `+=${dleft}`,
+            top: `+=${dtop}`,
+        }, 600, cardMoveComplete)
     })
 }
 
@@ -145,7 +239,8 @@ function drawTakeTrickQuestion(answer=null) {
         $("#sidebar").append($("<div>").text(answer.explanation))
         displayContinueButton()
 
-        displayPlayedCards((card, idx) => trickQuestionHighlightSelector(answer, card, idx))
+        // displayPlayedCards((card, idx) => trickQuestionHighlightSelector(answer, card, idx))
+        drawCards((card, idx) => trickQuestionHighlightSelector(answer, card, idx))
     }
 }
 
@@ -163,12 +258,14 @@ function legalPlayQuestionResponseSelector(card, idx) {
 function drawLegalPlayQuestion(answer=null) {
     $("#sidebar").empty().text("Click ALL the cards that are legal plays.")
     if (answer != null) {
-        displayYourHand((card, idx) => legalPlayQuestionAnswerSelector(answer, card, idx))
+        // displayYourHand((card, idx) => legalPlayQuestionAnswerSelector(answer, card, idx))
+        drawCards((card, idx) => legalPlayQuestionAnswerSelector(answer, card, idx))
         $("#sidebar").append($("<div>").text(answer.explanation))
         displayContinueButton()
     }
     else {
-        displayYourHand(legalPlayQuestionResponseSelector)
+        // displayYourHand(legalPlayQuestionResponseSelector)
+        drawCards(legalPlayQuestionResponseSelector)
         displaySubmitButton(legalPlayResponse)
     }
 }
@@ -203,10 +300,11 @@ function playCardState() {
             }
         })
         your_hand.splice(splice_index, 1)
-        displayYourHand()
+        //displayYourHand()
     }
     played_cards[current_player] = state.card
-    displayPlayedCards()
+    // displayPlayedCards()
+    drawCards()
 
     current_player = (current_player + 1) % 4
     nextState()
@@ -247,9 +345,16 @@ function takeTrickState() {
     // player that took the trick has the lead
     current_player = best_idx
     points[current_player] += trick_points
+
+    // Remove
+    played_cards.forEach(function(card, idx) {
+        deleteCardObject(card[0], card[1])
+    })
+
     played_cards = [null, null, null, null]
 
-    displayPlayedCards()
+    // displayPlayedCards()
+    drawCards()
     displayPoints()
     nextState()
 }
@@ -343,11 +448,13 @@ function cleanUpState() {
             $("#sidebar").empty()
             break;
         case "trick_question":
-            displayPlayedCards()
+            // displayPlayedCards()
+            drawCards()
             $("#sidebar").empty()
             break;
         case "play_question":
-            displayYourHand()
+            // displayYourHand()
+            drawCards()
             $("#sidebar").empty()
             break;
     }  
@@ -359,6 +466,11 @@ function done(){
 }
 
 function nextState() {
+    if (cards_animating > 0) {
+        next_state_deferred = true
+        return
+    }
+
     if (next_state == "done") {
         console.log("done")
         done()
@@ -465,8 +577,9 @@ function legalPlayResponse() {
 
 /*** ENTRY POINT ***/
 function ready() {
-    displayYourHand()
-    displayPlayedCards()
+    //displayYourHand()
+    //displayPlayedCards()
+    drawCards()
     displayPoints()
     nextState()
 }
