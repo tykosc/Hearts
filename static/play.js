@@ -43,7 +43,8 @@ function createCardObject(rank, suit) {
         rank: rank,
         suit: suit,
         div: card_div,
-        start: {top: 0, left: 0}
+        start: {top: 0, left: 0},
+        autoanim: true
     }
 }
 
@@ -61,7 +62,7 @@ function deleteCardObject(rank, suit) {
     card_objects.splice(del_index, 1)
 }
 
-// Gets a card object, creating it if necessary. Adds the given click handler
+// Gets a card object's div, creating it if necessary. Adds the given click handler
 function getCard(rank, suit, handler) {
     let card_object = findCardObject(rank, suit)
     if (card_object == null) {
@@ -93,6 +94,11 @@ function cardMoveComplete() {
             nextState()
         }
     }
+}
+
+function deleteCardAfterMove(rank, suit) {
+    deleteCardObject(rank, suit)
+    cardMoveComplete()
 }
 
 // Gets an ordered, numeric rank from a string rank.
@@ -146,27 +152,51 @@ function _displayPlayedCards(highlight_selector=null) {
     })
 }
 
+function moveCard(card_obj, completion) {
+    let start = card_obj.start
+    let end = card_obj.div.offset()
+    let dtop = end.top - start.top
+    let dleft = end.left - start.left
+
+    card_obj.div.offset(start)
+    cards_animating += 1
+    card_obj.div.animate({
+        left: `+=${dleft}`,
+        top: `+=${dtop}`,
+    }, 600, completion)
+}
+
 function drawCards(highlight_selector=null) {
     card_objects.forEach(function(card_obj, _) {
-        card_obj.start = card_obj.div.offset()
+        if (card_obj.autoanim) card_obj.start = card_obj.div.offset()
     })
 
     _displayYourHand(highlight_selector)
     _displayPlayedCards(highlight_selector)
 
     card_objects.forEach(function(card_obj, _) {
-        let start = card_obj.start
-        let end = card_obj.div.offset()
-        let dtop = end.top - start.top
-        let dleft = end.left - start.left
+        if (card_obj.autoanim) moveCard(card_obj, cardMoveComplete)
+    })
+}
 
-        card_obj.div.offset(start)
-        cards_animating += 1
-        console.log(`anim ${card_obj.rank}${card_obj.suit} ${start.left}, ${start.top} to ${end.left}, ${end.top}`)
-        card_obj.div.animate({
-            left: `+=${dleft}`,
-            top: `+=${dtop}`,
-        }, 600, cardMoveComplete)
+function displayTrickTaken(trick, taken_by) {
+    let target = $(`#points_row_${taken_by}`).offset()
+    let trick_objects = []
+
+    trick.forEach(function(card, _) {
+        let card_object = findCardObject(card[0], card[1])
+        card_object.autoanim = false
+        card_object.start = card_object.div.offset()
+        trick_objects.push(card_object)
+    })
+
+    trick_objects.forEach(function(card_object, _) {
+        $("#points").append(card_object.div)
+        card_object.div.offset(target)
+    })
+
+    trick_objects.forEach(function(card_object, _) {
+        moveCard(card_object, () => deleteCardAfterMove(card_object.rank, card_object.suit))
     })
 }
 
@@ -175,7 +205,7 @@ function displayPoints() {
     $("#points").empty()
 
     points.forEach(function(pt, idx) {
-        points_row = $("<div>")
+        points_row = $(`<div id=points_row_${idx}>`)
             .append($("<span>").text(playerName(idx) + ": "))
             .append($("<span>").text(pt))
 
@@ -321,6 +351,7 @@ function takeTrickState() {
     let best_idx = -1
     let trick_points = 0
 
+    let trick_taken = []
     // Add up points taken and determine who took the trick
     played_cards.forEach(function(card, idx) {
         let rank = card[0]
@@ -340,22 +371,19 @@ function takeTrickState() {
         else if (suit == "s" && rank == "Q") {
             trick_points += 13
         }
+        trick_taken.push(card)
     })
 
     // player that took the trick has the lead
     current_player = best_idx
     points[current_player] += trick_points
 
-    // Remove
-    played_cards.forEach(function(card, idx) {
-        deleteCardObject(card[0], card[1])
-    })
+    displayPoints()
+    displayTrickTaken(trick_taken, best_idx)
 
     played_cards = [null, null, null, null]
 
-    // displayPlayedCards()
     drawCards()
-    displayPoints()
     nextState()
 }
 
