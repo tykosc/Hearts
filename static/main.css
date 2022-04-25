@@ -1,13 +1,13 @@
 .correct {
-    color: green;
+    border: solid green 2px;
 }
 
 .incorrect {
-    color: red;
+    border: solid red 2px;
 }
 
 .highlight {
-    color: rgb(195, 195, 90);
+    border: solid rgb(195, 195, 90) 2px;
 }   
 
 .card-in-hand{
