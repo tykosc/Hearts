@@ -170,13 +170,13 @@ function moveCard(card_obj, completion) {
     }, 600, completion)
 }
 
-function drawCards(highlight_selector=null) {
+function drawCards(hand_highlight=null, played_highlight=null) {
     card_objects.forEach(function(card_obj, _) {
         if (card_obj.autoanim) card_obj.start = card_obj.div.offset()
     })
 
-    _displayYourHand(highlight_selector)
-    _displayPlayedCards(highlight_selector)
+    _displayYourHand(hand_highlight)
+    _displayPlayedCards(played_highlight)
 
     card_objects.forEach(function(card_obj, _) {
         if (card_obj.autoanim) moveCard(card_obj, cardMoveComplete)
@@ -274,7 +274,7 @@ function drawTakeTrickQuestion(answer=null) {
         displayContinueButton()
 
         // displayPlayedCards((card, idx) => trickQuestionHighlightSelector(answer, card, idx))
-        drawCards((card, idx) => trickQuestionHighlightSelector(answer, card, idx))
+        drawCards(null, (card, idx) => trickQuestionHighlightSelector(answer, card, idx))
     }
 }
 
