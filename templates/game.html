@@ -8,7 +8,6 @@
 <script type="text/javascript" src="{{ url_for('static', filename = 'play.js') }}"></script>
 
 <div style="text-align: center; padding-left: 1cm;" class="row">
-    <div id="quiz-number"><b>Quiz #1:</b></div>
     <b>Question  &nbsp</b>
     <div id="result"></div>
     <b>/33</b>
@@ -27,9 +26,9 @@
             <div class="col-4" style="text-align:center;">
                 <br>
                 <div style="padding-top:3cm;"><b>Player 1</b></div>
-                <span id="played_cards_1" style="padding-left:4cm;"></span>
                 <div><b>Points:</b></div>
                 <span id="points_1"></span>
+                <span id="played_cards_1" style="padding-left:4cm;"></span>
             </div>
             <div class="col-4" style="text-align:center;">
                 <div><b>Player 2</b></div>
@@ -40,9 +39,9 @@
             <div class="col-4" style="text-align:center;">
                 <br>
                 <div style="padding-top:3cm;"><b>Player 3</b></div>
-                <div id="played_cards_3" style="padding-right:4cm;"></div>
                 <div><b>Points:</b></div>
                 <div id="points_3"></div>
+                <div id="played_cards_3" style="padding-right:4cm;"></div>
             </div>
         </div>
         <div class="row">
@@ -53,8 +52,8 @@
         </div>
         <div class="row">
                 <div class="col-12">
-                    <div id = "your_hand" style="padding-top: 5cm;"></div>
                     <div style="text-align: center;"><b>Your Hand</b></div>
+                    <div id = "your_hand"></div>
                     <div style="text-align: center;"><b>Points:</b></div>
                     <span style="text-align:center;" id="points_0"></span>
                 </div>
