@@ -456,6 +456,7 @@ $("#continue").append(b)
 
 function displayQuestionStatus(){
     $("#result").text(question_status)
+}
 
 /*** STATE FLOW ***/
 
@@ -616,9 +617,6 @@ function legalPlayResponse() {
             console.log(error)
         }
     })
-}
-
-
 }
 
 
