@@ -39,6 +39,12 @@ function findCardObject(rank, suit) {
     return out_object
 }
 
+function playerCardOffset(who, card_div) {
+    let points_div = $(`#points_${who}`)
+    let pos = points_div.offset()
+    return {top: pos.top + card_div.height() * 0.5, left: pos.left + points_div.width() * 0.5 + card_div.width() * 0.5}
+}
+
 function createCardObject(rank, suit) {
     let card_div = $(`
         <img class="card-in-hand" style="margin:3px" src=
@@ -49,7 +55,7 @@ function createCardObject(rank, suit) {
         rank: rank,
         suit: suit,
         div: card_div,
-        start: {top: 0, left: 0},
+        start: playerCardOffset(current_player, card_div),
         autoanim: true
     }
 }
@@ -199,7 +205,7 @@ function prepDisplayTrickTaken(trick, taken_by) {
 }
 
 function displayTrickTaken(trick_objects, taken_by) {
-    let target = $(`#points_${taken_by}`).offset()
+    let target = playerCardOffset(taken_by, trick_objects[0].div)
 
     trick_objects.forEach(function(card_object, _) {
         card_object.div.offset(target)
