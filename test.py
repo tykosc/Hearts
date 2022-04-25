@@ -507,5 +507,5 @@ test_states = {
     "1260": {
         "action": "take_trick",
         "next_state": "done"
-    },
+    }
 }

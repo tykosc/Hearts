@@ -37,7 +37,7 @@ function findCardObject(rank, suit) {
 }
 
 function createCardObject(rank, suit) {
-    let card_div = $(`<div class="col-2 card-in-hand" style="margin:3px">${rank}${suit}</div>`)
+    let card_div = $(`<span class="col-auto card-in-hand" style="margin:3px margin-top:10px">${rank}${suit}</span>`)
         .css("position", "relative")
     return {
         rank: rank,
@@ -138,7 +138,8 @@ function _displayPlayedCards(highlight_selector=null) {
     $("#played_cards").empty()
 
     played_cards.forEach(function(card, idx) {
-        $("#played_cards").append($("<span>").text(playerName(idx) + ": "))
+        $("#played_cards_" + toString(idx)).empty()
+        $("#played_cards_" + toString(idx)).append($("<span>").text(playerName(idx) + ": "))
         played_row = $("<div class='row'>")
         if (card != null) {
             // let card_added = createCard(card[0], card[1], onCardInPlayClicked).data("player", idx)
@@ -148,7 +149,7 @@ function _displayPlayedCards(highlight_selector=null) {
             }
             played_row.append(card_div)
         }
-        $("#played_cards").append(played_row)
+        $("#played_cards_" + toString(idx)).append(played_row)
     })
 }
 
@@ -180,7 +181,7 @@ function drawCards(highlight_selector=null) {
 }
 
 function displayTrickTaken(trick, taken_by) {
-    let target = $(`#points_row_${taken_by}`).offset()
+    let target = $(`#points_${taken_by}`).offset()
     let trick_objects = []
 
     trick.forEach(function(card, _) {
@@ -191,7 +192,7 @@ function displayTrickTaken(trick, taken_by) {
     })
 
     trick_objects.forEach(function(card_object, _) {
-        $("#points").append(card_object.div)
+        $("#game-content").append(card_object.div)
         card_object.div.offset(target)
     })
 
@@ -202,14 +203,14 @@ function displayTrickTaken(trick, taken_by) {
 
 // Displays each player's current points
 function displayPoints() {
-    $("#points").empty()
 
     points.forEach(function(pt, idx) {
+        $(`#points_${idx}`).empty()
         points_row = $(`<div id=points_row_${idx}>`)
             .append($("<span>").text(playerName(idx) + ": "))
             .append($("<span>").text(pt))
 
-        $("#points").append(points_row)
+        $(`#points_${idx}`).append(points_row)
     })
 }
 
