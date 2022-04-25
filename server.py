@@ -7,6 +7,7 @@ app = Flask(__name__)
 from learn import *
 from test import *
 
+
 #int of correct anwers from user in quiz
 score = 0
 
@@ -157,6 +158,7 @@ def submit_play_answer():
       score  =  score + 1
 
    return jsonify(answer)
+
 
 if __name__ == '__main__':
    app.run(debug = True)

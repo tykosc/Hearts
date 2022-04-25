@@ -12,7 +12,11 @@ let state = {}                                          // The currently loaded 
 let question = {}                                       // The currently loaded question, including the response, if any
 
 let cardInHandCallback = null                           // What to do if a card in hand is clicked
-let cardInPlayCallback = null                           // What to do if a card in play is clicked
+let cardInPlayCallback = null    
+
+let question_status = 1
+
+// What to do if a card in play is clicked
 
 function playerName(index) {
     if (index == 0) return "you"
@@ -212,10 +216,13 @@ function displayPoints() {
     })
 }
 
+
 function displayContinueButton(){
     b = $("<button>")
         .text("Continue")
         .click(function(){
+        question_status = question_status+1
+        $("#result").text(question_status)
         //remove the button 
         $("#continue").empty()
         nextState()
@@ -249,7 +256,7 @@ function drawMultipleChoiceQuestion(answer=null) {
     })
 
     if (answer != null) {
-        $("#sidebar").append($("<div>").text(answer.explanation))
+        $("#sidebar").append($("<div style='padding-top:10px;'>").text(answer.explanation))
         displayContinueButton()
     }
 }
@@ -426,7 +433,6 @@ function legalPlayQuestionState() {
 
 function clearScreenState(){
     $("#game-content").empty()
-    $("#points").empty()
     nextState()
 
 }
@@ -602,10 +608,16 @@ function legalPlayResponse() {
     })
 }
 
+function displayQuestionStatus(){
+    $("#result").text(question_status)
+}
+
+
 /*** ENTRY POINT ***/
 function ready() {
     //displayYourHand()
     //displayPlayedCards()
+    displayQuestionStatus()
     drawCards()
     displayPoints()
     nextState()
