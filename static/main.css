@@ -17,6 +17,10 @@
     object-fit: contain;
 }
 
+.played-cards {
+    height: 106px;
+}
+
 .main-title{
     font-size: 30px;
     text-align: center;

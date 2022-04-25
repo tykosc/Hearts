@@ -41,7 +41,7 @@ function findCardObject(rank, suit) {
 
 function createCardObject(rank, suit) {
     let card_div = $(`
-        <img class="col-auto card-in-hand" style="margin:3px" src=
+        <img class="card-in-hand" style="margin:3px" src=
         "https://uid-playing-cards.s3.amazonaws.com/${rank.toLowerCase()}${suit.toLowerCase()}.png"></img>
         `)
         .css("position", "relative")
@@ -185,8 +185,7 @@ function drawCards(hand_highlight=null, played_highlight=null) {
     })
 }
 
-function displayTrickTaken(trick, taken_by) {
-    let target = $(`#points_${taken_by}`).offset()
+function prepDisplayTrickTaken(trick, taken_by) {
     let trick_objects = []
 
     trick.forEach(function(card, _) {
@@ -196,8 +195,13 @@ function displayTrickTaken(trick, taken_by) {
         trick_objects.push(card_object)
     })
 
+    return trick_objects
+}
+
+function displayTrickTaken(trick_objects, taken_by) {
+    let target = $(`#points_${taken_by}`).offset()
+
     trick_objects.forEach(function(card_object, _) {
-        $("#game-content").append(card_object.div)
         card_object.div.offset(target)
     })
 
@@ -387,11 +391,9 @@ function takeTrickState() {
     points[current_player] += trick_points
 
     displayPoints()
-    displayTrickTaken(trick_taken, best_idx)
-
-    played_cards = [null, null, null, null]
-
+    trick_objects = prepDisplayTrickTaken(trick_taken, best_idx)
     drawCards()
+    displayTrickTaken(trick_objects, best_idx)
     nextState()
 }
 
@@ -436,7 +438,6 @@ function legalPlayQuestionState() {
 function clearScreenState(){
     $("#game-content").empty()
     nextState()
-
 }
 
 function testMeState(){
@@ -447,11 +448,9 @@ function displayStateButton(){
     b = $("<button>")
     .text("Test Me! ")
     .click(function(){
-    window.location.href = "/test" 
-})
-
-$("#continue").append(b)
-
+        window.location.href = "/test" 
+    })
+    $("#continue").append(b)
 }
 
 function displayQuestionStatus(){
@@ -485,6 +484,10 @@ function cleanUpState() {
     cardInPlayCallback = null
 
     switch (state.action) {
+        case "take_trick":
+            played_cards = [null, null, null, null]
+            drawCards()
+            break;
         case "mc_question":
             $("#sidebar").empty()
             break;
@@ -608,7 +611,6 @@ function legalPlayResponse() {
         data : JSON.stringify({response: question.response, hand: your_hand, played: played_cards, hearts_broken: hearts_broken}),
         success: function(result){
             drawLegalPlayQuestion(result)
-            console.log(jQuery.type(question.response[0]))
         },
         error: function(request, status, error){
             console.log("Error");
