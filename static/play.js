@@ -13,6 +13,7 @@ let question = {}                                       // The currently loaded 
 
 let cardInHandCallback = null                           // What to do if a card in hand is clicked
 let cardInPlayCallback = null                           // What to do if a card in play is clicked
+let quiz_number = 1
 
 function playerName(index) {
     if (index == 0) return "you"
@@ -468,6 +469,8 @@ function processState() {
         case "test_me": testMeState(); break;
         default: console.error(`unknown state action ${state.action}`); break;
     }
+    $("#quiz-number").empty()
+    $("#quiz-number").append($(`<b>Quiz #${quiz_number}</b>`))
 }
 
 function cleanUpState() {
@@ -542,6 +545,7 @@ function onCardInPlayClicked() {
 
 /*** QUESTION RESPONSE AJAX CALLS ***/
 function multipleChoiceResponse(index) {
+    quiz_number += 1
     question.response = index
 
     $.ajax({
@@ -565,6 +569,7 @@ function multipleChoiceResponse(index) {
 }
 
 function takeTrickResponse(index) {
+    quiz_number += 1
     question.response = index
 
     $.ajax({
@@ -587,6 +592,7 @@ function takeTrickResponse(index) {
 }
 
 function legalPlayResponse() {
+    quiz_number += 1
     $.ajax({
         type: "POST",
         url: "/submit_play_answer",           
