@@ -15,6 +15,9 @@ learn_init = {
    "mode": "learn",
    # The start state
    "start_state": "0",
+   # How to count steps/questions
+   "step_name": "Step",
+   "step_count": "13",
 } 
 
 ### ACTIONS ###

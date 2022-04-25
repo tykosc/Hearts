@@ -8,9 +8,9 @@
 <script type="text/javascript" src="{{ url_for('static', filename = 'play.js') }}"></script>
 
 <div style="text-align: center; padding-left: 1cm;" class="row">
-    <b>Question  &nbsp</b>
+    <b>{{init.step_name}}  &nbsp</b>
     <div id="result"></div>
-    <b>/33</b>
+    <b>/{{init.step_count}}</b>
 </div>
 <div class="row">
 

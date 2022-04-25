@@ -15,6 +15,9 @@ test_init = {
    "mode": "test",
    # The start state
    "start_state": "0005",
+   # How to count steps/questions
+   "step_name": "Question",
+   "step_count": "33",
 }
 
 test_states = {
