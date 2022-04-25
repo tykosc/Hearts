@@ -28,6 +28,9 @@ let card_objects = []
 let cards_animating = 0
 let next_state_deferred = false
 
+const card_width = 70.27
+const card_height = 100
+
 function findCardObject(rank, suit) {
     out_object = null
     card_objects.forEach(function(obj, _) {
@@ -40,9 +43,9 @@ function findCardObject(rank, suit) {
 }
 
 function playerCardOffset(who, card_div) {
-    let points_div = $(`#points_${who}`)
+    let points_div = $(`#player_name_${who}`)
     let pos = points_div.offset()
-    return {top: pos.top + card_div.height() * 0.5, left: pos.left + points_div.width() * 0.5 + card_div.width() * 0.5}
+    return {top: pos.top + points_div.height() * 0.5 - card_height * 0.5, left: pos.left + points_div.width() * 0.5 - card_width * 0.5}
 }
 
 function createCardObject(rank, suit) {

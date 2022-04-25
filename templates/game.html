@@ -23,25 +23,34 @@
 
     <div class="col-8" id="game-content">
         <div class="row">
+            <div class="col-4"></div>
             <div class="col-4" style="text-align:center;">
-                <br>
-                <div style="padding-top:3cm;"><b>Player 1</b></div>
-                <div><b>Points:</b></div>
-                <span id="points_1"></span>
-                <span id="played_cards_1" style="padding-left:4cm;" class="played-cards"></span>
-            </div>
-            <div class="col-4" style="text-align:center;">
-                <div><b>Player 2</b></div>
+                <div id="player_name_2"><b>Player 2</b></div>
                 <div><b>Points:</b></div>
                 <div id="points_2"></div>
                 <div id="played_cards_2" style="padding-top:10px;" class="played-cards"></div>
             </div>
-            <div class="col-4" style="text-align:center;">
+            <div class="col-4"></div>
+        </div>
+        <div class="row">
+            <div class="col-3" style="text-align:center;">
                 <br>
-                <div style="padding-top:3cm;"><b>Player 3</b></div>
+                <div id="player_name_1"><b>Player 1</b></div>
+                <div><b>Points:</b></div>
+                <span id="points_1"></span>
+            </div>
+            <div class="col-2">
+                <span id="played_cards_1" class="played-cards"></span>
+            </div>
+            <div class="col-2"></div>
+            <div class="col-2">
+                <div id="played_cards_3" class="played-cards"></div>
+            </div>
+            <div class="col-3" style="text-align:center;">
+                <br>
+                <div id="player_name_3"><b>Player 3</b></div>
                 <div><b>Points:</b></div>
                 <div id="points_3"></div>
-                <div id="played_cards_3" style="padding-right:4cm;" class="played-cards"></div>
             </div>
         </div>
         <div class="row">
@@ -54,7 +63,7 @@
                 <div class="col-12">
                     <div style="text-align: center;"><b>Your Hand</b></div>
                     <div id = "your_hand"></div>
-                    <div style="text-align: center;"><b>Points:</b></div>
+                    <div style="text-align: center;" id="player_name_0"><b>Points:</b></div>
                     <span style="text-align:center;" id="points_0"></span>
                 </div>
         </div>
