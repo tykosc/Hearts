@@ -2,7 +2,7 @@
 
 learn_init = {
    # The cards in your hand (probably 13)
-   "your_hand": [("2", "c"), ("4", "d"), ("Q", "s"), ("10", "h"),("J", "s"), ("3", "s"), ("8", "h")],
+   "your_hand": [("2", "c"), ("5", "c"), ("9", "c"), ("K", "c"), ("4", "d"), ("3", "h"), ("8", "h"), ("10", "h"), ("J", "h"), ("3", "s"), ("6", "s"), ("J", "s"), ("Q", "s")],
    # The currently played cards
    "played_cards": [None, None, None, None],
    # The number of points taken by each player
@@ -138,7 +138,7 @@ lesson_states = {
    },
    "140": {
       "action": "play_card", 
-      "card": ("3", "s"),
+      "card": ("4", "s"),
       "next_state": "150"
    },
    "150": {
