@@ -37,7 +37,10 @@ function findCardObject(rank, suit) {
 }
 
 function createCardObject(rank, suit) {
-    let card_div = $(`<div class="col-2 card-in-hand" style="margin:3px">${rank}${suit}</div>`)
+    let card_div = $(`
+        <img class="col-2 card-in-hand" style="margin:3px" src=
+        "https://uid-playing-cards.s3.amazonaws.com/${rank.toLowerCase()}${suit.toLowerCase()}.png"></img>
+        `)
         .css("position", "relative")
     return {
         rank: rank,

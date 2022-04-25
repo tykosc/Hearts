@@ -11,12 +11,10 @@
 }   
 
 .card-in-hand{
-    border: solid black 1px;
+    padding: 0;
     height: 100px;
-    width: 5px;
-    text-align: center;
-    padding-top: 30px;
     cursor: pointer;
+    object-fit: contain;
 }
 
 .main-title{
