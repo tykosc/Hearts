@@ -8,7 +8,15 @@
 
 .highlight {
     border: solid rgb(195, 195, 90) 2px;
-}   
+}
+
+.correct-text {
+    color: green;
+}
+
+.incorrect-text {
+    color: red;
+}
 
 .card-in-hand{
     padding: 0;

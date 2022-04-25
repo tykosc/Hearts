@@ -257,19 +257,28 @@ function displaySubmitButton(action) {
 
 // Draws the multiple choice question in using answer if non-null to mark correct response
 function drawMultipleChoiceQuestion(answer=null) {
-    $("#sidebar").empty().text(state.prompt)
+    $("#sidebar").empty().text(state.prompt).append($("<hr>"))
+
+    const letters = ["a", "b", "c", "d", "e", "f"]
 
     state.choices.forEach(function(choice, index) {
-        let choice_div = $("<div>").text(choice)
+        let choice_div = $("<div>")
+            .append($("<button>").text(letters[index]))
         if (answer == null) {
             choice_div.click(() => multipleChoiceResponse(index))
+                .append($("<span>").text(choice))
         }
         else {
             if (index == answer.correct) {
-                choice_div.text(choice + " (correct)")
+                choice_div.append($("<span>").text(`${choice} (correct)`))
+                    .addClass("correct-text")
             }
             else if (index == question.response) {
-                choice_div.text(choice + " (your answer)")
+                choice_div.append($("<span>").text(`${choice} (your answer)`))
+                    .addClass("incorrect-text")
+            }
+            else {
+                choice_div.append($("<span>").text(choice))
             }
         }
         $("#sidebar").append(choice_div)
