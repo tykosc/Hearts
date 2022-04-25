@@ -452,6 +452,9 @@ $("#continue").append(b)
 
 }
 
+function displayQuestionStatus(){
+    $("#result").text(question_status)
+
 /*** STATE FLOW ***/
 
 function processState() {
@@ -608,8 +611,7 @@ function legalPlayResponse() {
     })
 }
 
-function displayQuestionStatus(){
-    $("#result").text(question_status)
+
 }
 
 
