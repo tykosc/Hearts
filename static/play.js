@@ -135,11 +135,10 @@ function _displayYourHand(highlight_selector=null) {
 // Displays the currently played cards, optionally adding classes for highlights using highlight_selector
 // highlight_selector should be a function (card, index) -> class(es) to add
 function _displayPlayedCards(highlight_selector=null) {
-    $("#played_cards").empty()
 
     played_cards.forEach(function(card, idx) {
-        $("#played_cards_" + toString(idx)).empty()
-        $("#played_cards_" + toString(idx)).append($("<span>").text(playerName(idx) + ": "))
+        $(`#played_cards_${idx}`).empty()
+        $(`#played_cards_${idx}`).append($("<span>").text(playerName(idx) + ": "))
         played_row = $("<div class='row'>")
         if (card != null) {
             // let card_added = createCard(card[0], card[1], onCardInPlayClicked).data("player", idx)
@@ -149,7 +148,7 @@ function _displayPlayedCards(highlight_selector=null) {
             }
             played_row.append(card_div)
         }
-        $("#played_cards_" + toString(idx)).append(played_row)
+        $(`#played_cards_${idx}`).append(played_row)
     })
 }
 
@@ -207,7 +206,6 @@ function displayPoints() {
     points.forEach(function(pt, idx) {
         $(`#points_${idx}`).empty()
         points_row = $(`<div id=points_row_${idx}>`)
-            .append($("<span>").text(playerName(idx) + ": "))
             .append($("<span>").text(pt))
 
         $(`#points_${idx}`).append(points_row)
