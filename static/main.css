@@ -37,6 +37,9 @@
     padding: 20px;
     font-size: larger;
 }
-#sidebar{
+#sidebar-col{
     border-right: black solid 1px;
+}
+#step-row {
+    margin-bottom: 5px;
 }

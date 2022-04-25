@@ -7,14 +7,15 @@
 </script>
 <script type="text/javascript" src="{{ url_for('static', filename = 'play.js') }}"></script>
 
-<div style="text-align: center; padding-left: 1cm;" class="row">
-    <b>{{init.step_name}}  &nbsp</b>
-    <div id="result"></div>
-    <b>/{{init.step_count}}</b>
-</div>
 <div class="row">
 
-    <div class="col-4">
+    <div class="col-4" id="sidebar-col">
+        <div class="row" id="step-row">
+            <b>{{init.step_name}}  &nbsp</b>
+            <div id="result"></div>
+            <b>/{{init.step_count}}</b>
+        </div>
+
         <div id="sidebar">
             <!-- Explanatory text, buttons, questions go here -->
         </div>
