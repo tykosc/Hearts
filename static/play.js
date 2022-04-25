@@ -172,6 +172,11 @@ function moveCard(card_obj, completion) {
     let end = card_obj.div.offset()
     let dtop = end.top - start.top
     let dleft = end.left - start.left
+    let sqr_magnitude = dtop * dtop + dleft * dleft
+
+    if (sqr_magnitude < 5) {
+        return // hardly moves, don't animate
+    }
 
     card_obj.div.offset(start)
     cards_animating += 1
