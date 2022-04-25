@@ -12,11 +12,10 @@ let state = {}                                          // The currently loaded 
 let question = {}                                       // The currently loaded question, including the response, if any
 
 let cardInHandCallback = null                           // What to do if a card in hand is clicked
-let cardInPlayCallback = null    
+let cardInPlayCallback = null                           // What to do if a card in play is clicked
 
-let question_status = 1
-
-// What to do if a card in play is clicked
+let question_status = 1                         
+let quiz_number = 1
 
 function playerName(index) {
     if (index == 0) return "you"
@@ -41,7 +40,10 @@ function findCardObject(rank, suit) {
 }
 
 function createCardObject(rank, suit) {
-    let card_div = $(`<span class="col-auto card-in-hand" style="margin:3px margin-top:10px">${rank}${suit}</span>`)
+    let card_div = $(`
+        <img class="col-2 card-in-hand" style="margin:3px" src=
+        "https://uid-playing-cards.s3.amazonaws.com/${rank.toLowerCase()}${suit.toLowerCase()}.png"></img>
+        `)
         .css("position", "relative")
     return {
         rank: rank,
@@ -170,13 +172,13 @@ function moveCard(card_obj, completion) {
     }, 600, completion)
 }
 
-function drawCards(highlight_selector=null) {
+function drawCards(hand_highlight=null, played_highlight=null) {
     card_objects.forEach(function(card_obj, _) {
         if (card_obj.autoanim) card_obj.start = card_obj.div.offset()
     })
 
-    _displayYourHand(highlight_selector)
-    _displayPlayedCards(highlight_selector)
+    _displayYourHand(hand_highlight)
+    _displayPlayedCards(played_highlight)
 
     card_objects.forEach(function(card_obj, _) {
         if (card_obj.autoanim) moveCard(card_obj, cardMoveComplete)
@@ -276,7 +278,7 @@ function drawTakeTrickQuestion(answer=null) {
         displayContinueButton()
 
         // displayPlayedCards((card, idx) => trickQuestionHighlightSelector(answer, card, idx))
-        drawCards((card, idx) => trickQuestionHighlightSelector(answer, card, idx))
+        drawCards(null, (card, idx) => trickQuestionHighlightSelector(answer, card, idx))
     }
 }
 
@@ -473,6 +475,8 @@ function processState() {
         case "test_me": testMeState(); break;
         default: console.error(`unknown state action ${state.action}`); break;
     }
+    $("#quiz-number").empty()
+    $("#quiz-number").append($(`<b>Quiz #${quiz_number}</b>`))
 }
 
 function cleanUpState() {
@@ -547,6 +551,7 @@ function onCardInPlayClicked() {
 
 /*** QUESTION RESPONSE AJAX CALLS ***/
 function multipleChoiceResponse(index) {
+    quiz_number += 1
     question.response = index
 
     $.ajax({
@@ -570,6 +575,7 @@ function multipleChoiceResponse(index) {
 }
 
 function takeTrickResponse(index) {
+    quiz_number += 1
     question.response = index
 
     $.ajax({
@@ -592,6 +598,7 @@ function takeTrickResponse(index) {
 }
 
 function legalPlayResponse() {
+    quiz_number += 1
     $.ajax({
         type: "POST",
         url: "/submit_play_answer",           

@@ -15,7 +15,7 @@ learn_init = {
    "mode": "learn",
    # The start state
    "start_state": "0",
-}
+} 
 
 ### ACTIONS ###
 # format:
