@@ -378,6 +378,20 @@ function playCardState() {
     nextState()
 }
 
+function setHandState() {
+    your_hand.forEach(function(card, idx) {
+        deleteCardObject(card[0], card[1])
+    })
+
+    your_hand = state.hand
+
+    current_player_tmp = current_player
+    current_player = 0 // animate cards as dealt to user
+    drawCards()
+    current_player = current_player_tmp
+    nextState()
+}
+
 function continueState(){
     displayContinueButton()
 }
@@ -501,6 +515,7 @@ function processState() {
         case "clear_text": clearTextState(); break;
         case "click_card": clickCardState(); break;
         case "play_card": playCardState(); break;
+        case "set_hand": setHandState(); break;
         case "continue": continueState(); break; 
         case "continue_step": continueStepState(); break;
         case "step": stepState(); break;
