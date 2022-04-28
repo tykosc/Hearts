@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 from learn import *
 from test import *
-
+from util import *
 
 #int of correct anwers from user in quiz
 score = 0
@@ -161,4 +161,8 @@ def submit_play_answer():
 
 
 if __name__ == '__main__':
+   # initialize step counts
+   learn_init["step_count"] = str(countSteps(lesson_states, learn_init["start_state"]))
+   test_init["step_count"]  = str(countSteps(test_states,   test_init["start_state"]))
+
    app.run(debug = True)

@@ -17,7 +17,7 @@ test_init = {
    "start_state": "0005",
    # How to count steps/questions
    "step_name": "Question",
-   "step_count": "33",
+   "step_count": "auto",
 }
 
 test_states = {

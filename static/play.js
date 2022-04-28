@@ -14,7 +14,7 @@ let question = {}                                       // The currently loaded 
 let cardInHandCallback = null                           // What to do if a card in hand is clicked
 let cardInPlayCallback = null                           // What to do if a card in play is clicked
 
-let question_status = 1                         
+let step = 1                         
 let quiz_number = 1
 
 function playerName(index) {
@@ -236,18 +236,21 @@ function displayPoints() {
     })
 }
 
+function advanceStep() {
+    step = step+1
+    $("#result").text(step)
+}
 
-function displayContinueButton(){
+function displayContinueButton(advance_step = false){
     b = $("<button>")
         .text("Continue")
         .click(function(){
-        question_status = question_status+1
-        $("#result").text(question_status)
-        //remove the button 
-        $("#continue").empty()
-        nextState()
-    })
-
+            if (advance_step)
+                advanceStep()
+            //remove the button 
+            $("#continue").empty()
+            nextState()
+        })
     $("#continue").append(b)
 }
 
@@ -286,7 +289,7 @@ function drawMultipleChoiceQuestion(answer=null) {
 
     if (answer != null) {
         $("#sidebar").append($("<div style='padding-top:10px;'>").text(answer.explanation))
-        displayContinueButton()
+        displayContinueButton(true)
     }
 }
 
@@ -302,7 +305,7 @@ function drawTakeTrickQuestion(answer=null) {
     $("#sidebar").empty().text("Click the card that takes this trick.")
     if (answer != null) {
         $("#sidebar").append($("<div>").text(answer.explanation))
-        displayContinueButton()
+        displayContinueButton(true)
 
         // displayPlayedCards((card, idx) => trickQuestionHighlightSelector(answer, card, idx))
         drawCards(null, (card, idx) => trickQuestionHighlightSelector(answer, card, idx))
@@ -326,7 +329,7 @@ function drawLegalPlayQuestion(answer=null) {
         // displayYourHand((card, idx) => legalPlayQuestionAnswerSelector(answer, card, idx))
         drawCards((card, idx) => legalPlayQuestionAnswerSelector(answer, card, idx))
         $("#sidebar").append($("<div>").text(answer.explanation))
-        displayContinueButton()
+        displayContinueButton(true)
     }
     else {
         // displayYourHand(legalPlayQuestionResponseSelector)
@@ -377,6 +380,15 @@ function playCardState() {
 
 function continueState(){
     displayContinueButton()
+}
+
+function continueStepState() {
+    displayContinueButton(true)
+}
+
+function stepState() {
+    advanceStep()
+    nextState()
 }
 
 function takeTrickState() {
@@ -477,7 +489,7 @@ function displayStateButton(){
 }
 
 function displayQuestionStatus(){
-    $("#result").text(question_status)
+    $("#result").text(step)
 }
 
 /*** STATE FLOW ***/
@@ -490,6 +502,8 @@ function processState() {
         case "click_card": clickCardState(); break;
         case "play_card": playCardState(); break;
         case "continue": continueState(); break; 
+        case "continue_step": continueStepState(); break;
+        case "step": stepState(); break;
         case "take_trick": takeTrickState(); break;
         case "clear_screen": clearScreenState(); break;
         case "mc_question": multipleChoiceState(); break;

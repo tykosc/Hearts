@@ -17,7 +17,7 @@ learn_init = {
    "start_state": "0",
    # How to count steps/questions
    "step_name": "Step",
-   "step_count": "13",
+   "step_count": "auto",
 } 
 
 ### ACTIONS ###
@@ -79,6 +79,10 @@ lesson_states = {
    "10": {
       "action": "click_card",
       "card": ("2", "c"),
+      "next_state": "15",
+   },
+   "15": {
+      "action": "step",
       "next_state": "20",
    },
    "20": {
@@ -111,7 +115,7 @@ lesson_states = {
       "next_state": "80",
    },
    "80": {
-      "action": "continue",
+      "action": "continue_step",
       "next_state": "90"
    },
    "90": {
@@ -124,7 +128,7 @@ lesson_states = {
       "next_state": "110",
    },
    "110": {
-      "action": "continue", 
+      "action": "continue_step", 
       "next_state": "120",
    },
    "120": {
@@ -149,6 +153,10 @@ lesson_states = {
    "160": {
       "action": "click_card",
       "card": ("J", "s"),
+      "next_state": "165",
+   },
+   "165": {
+      "action": "step",
       "next_state": "170"
    },
     "170": {
@@ -171,7 +179,7 @@ lesson_states = {
       "next_state": "210"
    },
     "210": {
-      "action": "continue",
+      "action": "continue_step",
       "next_state": "220"
    },
     "220": {
@@ -184,7 +192,7 @@ lesson_states = {
       "next_state": "240"
    },
    "240": {
-      "action": "continue",
+      "action": "continue_step",
       "next_state": "250"
    },
    "250": {
@@ -201,7 +209,7 @@ lesson_states = {
       "next_state": "290"
    },
    "290": {
-      "action": "continue",
+      "action": "continue_step",
       "next_state": "300"
    },
      "300": {
@@ -214,7 +222,7 @@ lesson_states = {
       "next_state": "320",
    },
    "320": {
-      "action": "continue",
+      "action": "continue_step",
       "next_state": "330",
    },
     "330": {
@@ -229,6 +237,10 @@ lesson_states = {
     "350": {
       "action": "click_card",
       "card": ("4", "d"),
+      "next_state": "355",
+   },
+   "355": {
+      "action": "step",
       "next_state": "360",
    },
     "360": {
@@ -257,7 +269,7 @@ lesson_states = {
       "next_state": "410",
    },
     "410": {
-      "action": "continue",
+      "action": "continue_step",
       "next_state": "420",
    },
     "420": {
@@ -291,6 +303,10 @@ lesson_states = {
     "480": {
       "action": "click_card",
       "card": ("Q", "s"),
+      "next_state": "485",
+   },
+   "485": {
+      "action": "step",
       "next_state": "490",
    }, 
      "490": {
@@ -312,7 +328,7 @@ lesson_states = {
       "next_state": "530"
    },
      "530": {
-      "action": "continue",
+      "action": "continue_step",
       "next_state": "540"
    }, 
    "540": {
@@ -334,7 +350,7 @@ lesson_states = {
       "next_state": "580"
    },
      "580": {
-      "action": "continue", 
+      "action": "continue_step", 
       "next_state": "590"
    },
     "590": {
@@ -347,7 +363,7 @@ lesson_states = {
       "next_state": "610"
    },
      "610": {
-      "action": "continue", 
+      "action": "continue_step", 
       "next_state": "615"
    },
    "615":{
@@ -360,7 +376,7 @@ lesson_states = {
       "next_state": "630"
    },
    "630": {
-      "action": "continue",
+      "action": "continue_step",
       "next_state": "635"
    },
    "635":{
@@ -373,7 +389,7 @@ lesson_states = {
       "next_state": "650"
    }, 
    "650": {
-      "action": "continue",
+      "action": "continue_step",
       "next_state": "660"
    },
    "660": {
@@ -392,6 +408,10 @@ lesson_states = {
    }, 
    "690": {
       "action": "test_me",
+      "next_state": "700",
+   },
+   "700": { # dummy state that makes step counter correct
+      "action": "step",
       "next_state": "done"
    }, 
 }
