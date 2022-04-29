@@ -58,7 +58,7 @@ def quiz_end(difficulty):
       num_questions = test_init_1["step_count"] 
    else: 
       num_questions = test_init_0["step_count"]
-   return render_template('quiz_end.html', quiz_score = quiz_score, num_questions= num_questions)
+   return render_template('quiz_end.html', quiz_score = score, num_questions= num_questions)
 
 # AJAX ROUTES
 def preprocess(state):
