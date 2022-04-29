@@ -14,7 +14,8 @@ let question = {}                                       // The currently loaded 
 let cardInHandCallback = null                           // What to do if a card in hand is clicked
 let cardInPlayCallback = null                           // What to do if a card in play is clicked
 
-let step = 1                         
+let step = 1
+let step_count = parseInt(_init.step_count)                         
 let quiz_number = 1
 
 function playerName(index) {
@@ -237,7 +238,8 @@ function displayPoints() {
 }
 
 function advanceStep() {
-    step = step+1
+    if (step >= step_count) return
+    step += 1
     $("#result").text(step)
 }
 

@@ -39,6 +39,9 @@ learn_init = {
 # play_card (card)
 # makes the current_player play the given card, and advances current_player 
 
+# set_hand (hand)
+# re-deals the user with the given hand
+
 # take_trick ()
 # gives the current trick to whoever won, and updates their points
 
