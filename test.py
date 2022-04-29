@@ -275,10 +275,10 @@ test_states_1 = {
         "next_state": "0150"
     },
     "0150": {
-        "action": "trick_question",
-        "next_state": "0160"
-    },
-    "0160": {
+    #     "action": "trick_question",
+    #     "next_state": "0160"
+    # },
+    # "0160": {
         "action": "take_trick",
         "next_state": "0210"
     },
@@ -376,10 +376,10 @@ test_states_1 = {
         "next_state": "0435"
     },
     "0435": {
-        "action": "play_question",
-        "next_state": "0430"
-    },
-    "0430": {
+    #     "action": "play_question",
+    #     "next_state": "0430"
+    # },
+    # "0430": {
         "action": "play_card",
         "card": ("10", "s"),
         "next_state": "0440"
@@ -398,10 +398,10 @@ test_states_1 = {
         "next_state": "0450"
     },
     "0450": {
-        "action": "trick_question",
-        "next_state": "0460"
-    },
-    "0460": {
+    #     "action": "trick_question",
+    #     "next_state": "0460"
+    # },
+    # "0460": {
         "action": "take_trick",
         "next_state": "0510"
     },
@@ -440,10 +440,10 @@ test_states_1 = {
         "next_state": "0550"
     },
     "0550": {
-        "action": "trick_question",
-        "next_state": "0560"
-    },
-    "0560": {
+    #     "action": "trick_question",
+    #     "next_state": "0560"
+    # },
+    # "0560": {
         "action": "take_trick",
         "next_state": "0610"
     },
@@ -460,10 +460,10 @@ test_states_1 = {
         "next_state": "0625"
     },
     "0625": {
-        "action": "play_question",
-        "next_state": "0630"
-    },
-    "0630": {
+    #     "action": "play_question",
+    #     "next_state": "0630"
+    # },
+    # "0630": {
         "action": "play_card",
         "card": ("10", "d"),
         "next_state": "0640"
@@ -516,10 +516,10 @@ test_states_1 = {
         "next_state": "0750"
     },
     "0750": {
-        "action": "trick_question",
-        "next_state": "0760"
-    },
-    "0760": {
+    #     "action": "trick_question",
+    #     "next_state": "0760"
+    # },
+    # "0760": {
         "action": "take_trick",
         "next_state": "0810"
     },
@@ -592,10 +592,10 @@ test_states_1 = {
         "next_state": "0950"
     },
     "0950": {
-        "action": "trick_question",
-        "next_state": "0960"
-    },
-    "0960": {
+    #     "action": "trick_question",
+    #     "next_state": "0960"
+    # },
+    # "0960": {
         "action": "take_trick",
         "next_state": "1005"
     },
@@ -645,10 +645,10 @@ test_states_1 = {
         "next_state": "1125"
     },
     "1125": {
-        "action": "play_question",
-        "next_state": "1130"
-    },
-    "1130": {
+    #     "action": "play_question",
+    #     "next_state": "1130"
+    # },
+    # "1130": {
         "action": "play_card",
         "card": ("6", "d"),
         "next_state": "1140"
@@ -668,10 +668,10 @@ test_states_1 = {
     },
 
     "1205": {
-        "action": "play_question",
-        "next_state": "1210"
-    },
-    "1210": {
+    #     "action": "play_question",
+    #     "next_state": "1210"
+    # },
+    # "1210": {
         "action": "play_card",
         "card": ("8", "d"),
         "next_state": "1220"

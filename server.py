@@ -52,13 +52,13 @@ def rules():
 @app.route('/quiz_end/<difficulty>')
 def quiz_end(difficulty):
    # resetting the score
+   quiz_score = score
    reset_score()
-   score = 0
    if difficulty == "1":
       num_questions = test_init_1["step_count"] 
    else: 
       num_questions = test_init_0["step_count"]
-   return render_template('quiz_end.html', quiz_score = score, num_questions= num_questions)
+   return render_template('quiz_end.html', quiz_score = quiz_score, num_questions= num_questions)
 
 # AJAX ROUTES
 def preprocess(state):
