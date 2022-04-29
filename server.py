@@ -11,6 +11,10 @@ from util import *
 #int of correct anwers from user in quiz
 score = 0
 
+def reset_score():
+   global score
+   score = 0
+
 # stores the answer to an active question, if necessary
 answer = {}
 
@@ -34,6 +38,8 @@ def choose_test():
 
 @app.route('/test/<difficulty>')
 def test(difficulty):
+   # reset the score
+   reset_score()
    if difficulty == "1": 
       return render_template('game.html', init=test_init_1)
    else:
@@ -46,8 +52,7 @@ def rules():
 @app.route('/quiz_end/<difficulty>')
 def quiz_end(difficulty):
    # resetting the score
-   global score
-   quiz_score = score
+   reset_score()
    score = 0
    if difficulty == "1":
       num_questions = test_init_1["step_count"] 
