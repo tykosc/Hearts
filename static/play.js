@@ -428,6 +428,10 @@ function takeTrickState() {
     // player that took the trick has the lead
     current_player = best_idx
     points[current_player] += trick_points
+    if (points[current_player] == 26) {
+        points = [26, 26, 26, 26]
+        points[current_player] = 0
+    }
 
     displayPoints()
     trick_objects = prepDisplayTrickTaken(trick_taken, best_idx)
@@ -561,6 +565,9 @@ function clearGameState() {
     points = [0, 0, 0, 0]
     current_player = 0
     hearts_broken = false
+
+    drawCards()
+    displayPoints()
 
     nextState()
 }

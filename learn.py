@@ -326,11 +326,7 @@ lesson_states = {
    }, 
    "540": {
       "action": "clear_text", 
-      "next_state" : "550"
-   },
-   "550": {
-      "action": "clear_screen", 
-      "next_state": "560", 
+      "next_state" : "560"
    },
     "560": {
       "action": "set_text", 
@@ -339,7 +335,7 @@ lesson_states = {
    },
      "570": {
       "action": "set_text", 
-      "text": "The game ends when any player reaches some point threshold at the end of a round (e.g., 50 points). Then, the player with the fewest points wins!",
+      "text": "After each round, you add your points to your points from previous rounds. The game ends when any player reaches some point threshold at the end of a round (e.g., 50 points). Then, the player with the fewest points wins!",
       "next_state": "580"
    },
      "580": {
@@ -359,52 +355,206 @@ lesson_states = {
       "action": "continue_step", 
       "next_state": "615"
    },
+
    "615":{
       "action": "clear_text", 
+      "next_state": "616"
+   },
+   "616": {
+      "action": "clear_game",
       "next_state": "620"
    },
    "620": {
       "action": "set_text",
-      "text": " 1. The first round is safe. That means no player can play a heart or the queen of spades, even if they are void in clubs.",
-      "next_state": "630"
+      "text": "The first round is safe. That means no player can play a heart or the queen of spades, even if they are void in clubs.",
+      "next_state": "630",
    },
    "630": {
-      "action": "continue_step",
-      "next_state": "635"
-   },
-   "635":{
-      "action" : "clear_text",
+      "action": "continue",
       "next_state": "640"
    },
    "640": {
-      "action": "set_text",
-      "text": " 2. Hearts cannot be led until hearts have been 'broken,' meaning someone has played a heart on another trick. Playing the queen of spades does not count as breaking hearts.",
+      "action": "set_hand",
+      "hand": [("3", "d"), ("Q", "s"), ("2", "h"), ("3", "h"), ("4", "h"), ("5", "h"), ("7", "h"), ("8", "h"), ("10", "h"), ("J", "h"), ("Q", "h"), ("K", "h"), ("A", "h")],
       "next_state": "650"
-   }, 
+   },
    "650": {
-      "action": "continue_step",
+      "action": "set_current_player",
+      "current_player": "1",
       "next_state": "660"
    },
    "660": {
-      "action": "clear_text",
+      "action": "play_card",
+      "card": ("2", "c"),
       "next_state": "670"
-   }, 
+   },
    "670": {
-      "action": "set_text",
-      "text": "3. In very rare cases, you might find it possible to take all 26 points: thirteen hearts and the queen. This is called shooting the moon.",
+      "action": "play_card",
+      "card": ("A", "c"),
       "next_state": "680"
    },
    "680": {
-      "action": "set_text",
-      "text": "If you shoot the moon, instead of gaining 26 points, everyone else gains 26 points!", 
+      "action": "play_card",
+      "card": ("K", "c"),
       "next_state": "690"
-   }, 
-   "690": {
-      "action": "test_me",
-      "next_state": "700",
    },
-   "700": { # dummy state that makes step counter correct
-      "action": "step",
+   "690": {
+      "action": "set_text",
+      "text": "The first round is safe. That means no player can play a heart or the queen of spades, even if they are void in clubs. With this in mind, click on the card you could play in this (very farfetched) opening hand.",
+      "next_state": "700"
+   },
+   "700": {
+      "action": "click_card",
+      "card": ("3", "d"),
+      "next_state": "710",
+   },
+   "710": {
+      "action": "play_card",
+      "card": ("3", "d"),
+      "next_state": "720"
+   },
+   "720": {
+      "action": "set_text",
+      "text": "Great! Only the three of diamonds was playable. Did you notice that players 2 and 3 took this opportunity to ditch their high clubs?",
+      "next_state": "730"
+   },
+   "730": {
+      "action": "continue_step",
+      "next_state": "740"
+   },
+   "740": {
+      "action": "clear_text",
+      "next_state": "750"
+   },
+   "750": {
+      "action": "clear_game",
+      "next_state": "760"
+   },
+   "760": {
+      "action": "set_text",
+      "text": 'Hearts cannot be led until hearts have been "broken." Hearts are broken once someone has played a card on trick. Playing the queen of spades does not count as breaking hearts.',
+      "next_state": "765"
+   },
+   "765": {
+      "action": "continue",
+      "next_state": "770"
+   },
+   "770": {
+      "action": "set_points",
+      "points": [0, 13, 0, 0],
+      "next_state": "780"
+   },
+   "780": {
+      "action": "set_hand",
+      "hand": [("8", "s"), ("3", "h"), ("7", "h"), ("J", "h")],
+      "next_state": "790"
+   },
+   "790": {
+      "action": "set_current_player",
+      "current_player": "0",
+      "next_state": "800"
+   },
+   "800": {
+      "action": "set_text",
+      "text": 'Hearts cannot be led until hearts have been "broken." Hearts are broken once someone has played a card on trick. Playing the queen of spades does not count as breaking hearts. With this in mind, click on the card that you could lead in this position. (Check the current points: how do we know if hearts have been broken?)',
+      "next_state": "810"
+   },
+   "810": {
+      "action": "click_card",
+      "card": ("8", "s"),
+      "next_state": "820"
+   },
+   "820": {
+      "action": "play_card",
+      "card": ("8", "s"),
+      "next_state": "830"
+   },
+   "830": {
+      "action": "set_text",
+      "text": "Great! Notice that if you had the lead for the next trick, you would be allowed to lead a heart because you had no other choice.",
+      "next_state": "840"
+   },
+   "840": {
+      "action": "continue_step",
+      "next_state": "850"
+   },
+   "850": {
+      "action": "clear_text",
+      "next_state": "860"
+   },
+   "860": {
+      "action": "clear_game",
+      "next_state": "870"
+   },
+   "870": {
+      "action": "set_text",
+      "text": "In very rare cases, you might find it is possible to take all 26 points: thirteen hearts and the queen of spades. This is called shooting the moon.",
+      "next_state": "880"
+   },
+   "880": {
+      "action": "continue",
+      "next_state": "890"
+   },
+   "890": {
+      "action": "set_hand",
+      "hand": [("3", "c"), ("A", "h")],
+      "next_state": "900"
+   },
+   "900": {
+      "action": "set_points",
+      "points": [22, 0, 0, 0],
+      "next_state": "910"
+   },
+   "910": {
+      "action": "set_text",
+      "text": "It looks like you've taken most of the points so far... Playing the 3 of clubs would be an easy way to avoid taking any more points, but let's see what happens if we lead the ace instead.",
+      "next_state": "920"
+   },
+   "920": {
+      "action": "click_card",
+      "card": ("A", "h"),
+      "next_state": "930"
+   },
+   "930": {
+      "action": "play_card",
+      "card": ("A", "h"),
+      "next_state": "940"
+   },
+   "940": {
+      "action": "play_card",
+      "card": ("Q", "h"),
+      "next_state": "950"
+   },
+   "950": {
+      "action": "play_card",
+      "card": ("9", "h"),
+      "next_state": "960"
+   },
+   "960": {
+      "action": "play_card",
+      "card": ("J", "h"),
+      "next_state": "970"
+   },
+   "970": {
+      "action": "take_trick",
+      "next_state": "980"
+   },
+   "980": {
+      "action": "set_text",
+      "text": "Take another look at your points: instead of being at 26 points, you are now at zero and all of your opponents are at 26! This is what happens when you shoot the moon. It's a risky strategy, but with a huge payoff!",
+      "next_state": "990"
+   },
+   "990": {
+      "action": "continue_step",
+      "next_state": "1000"
+   },
+   "1000": {
+      "action": "set_text",
+      "text": "You're now ready to play! But why don't you test your knowledge first?",
+      "next_state": "1010"
+   },
+   "1010": {
+      "action": "test_me",
       "next_state": "done"
    }
 }
