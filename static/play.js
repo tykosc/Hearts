@@ -327,9 +327,10 @@ function drawLegalPlayQuestion(answer=null) {
     $("#sidebar").empty().text("Click ALL the cards that are legal plays.")
     if (answer != null) {
         // displayYourHand((card, idx) => legalPlayQuestionAnswerSelector(answer, card, idx))
+        
         drawCards((card, idx) => legalPlayQuestionAnswerSelector(answer, card, idx))
-        $("#sidebar").append($("<div>").text(answer.explanation))
         displayContinueButton(true)
+        $("#sidebar").append($("<div>").text(answer.explanation))
     }
     else {
         // displayYourHand(legalPlayQuestionResponseSelector)
@@ -490,16 +491,22 @@ function clearScreenState(){
 }
 
 function testMeState(){
-    displayStateButton()
+    displayTestMeButton()
 }
 
-function displayStateButton(){
-    b = $("<button>")
+function displayTestMeButton(){
+    b1 = $("<button>")
     .text("Test Me! ")
     .click(function(){
-        window.location.href = "/test" 
+        window.location.href = "/choose_test" 
     })
-    $("#continue").append(b)
+    b2 = $("<button>")
+    .text("Review a summary of the rules")
+    .click(function(){
+        window.location.href = "/rules" 
+    })
+    $("#continue").append(b1)
+    $("#continue").append(b2)
 }
 
 function displayQuestionStatus(){
@@ -557,8 +564,13 @@ function cleanUpState() {
 }
 
 function done(){
-    if(mode == "test")
-        window.location.assign('/quiz_end')
+    if(mode == "test_0") {
+        window.location.assign('/quiz_end/0')
+    }
+    if (mode == "test_1") {
+        window.location.assign('/quiz_end/1')
+    }
+
 }
 
 function nextState() {

@@ -1,6 +1,194 @@
 # States for the 'test' section
 
-test_init = {
+test_init_0 = {
+
+    # The cards in your hand (probably 13)
+
+    "your_hand": [('2', 's'),('3', 's'),('8', 's'),('J', 's'),('5', 's'), ('4', 'c'), ('8', 'c'), ('K', 'd'), ('3', 'd'), ('A', 'h'),('5', 'h'),('8', 'h'),('6', 'h')],
+
+   # The currently played cards
+   "played_cards": [None, None, None, None],
+   # The number of points taken by each player
+   "points": [0,0,0,0],
+   # Have hearts been broken?
+   "hearts_broken": False,
+   # The current player (0 = you, then 1, 2, 3)
+   "current_player": "1",
+   # Mode
+   "mode": "test_0",
+   # The start state
+   "start_state": "0005",
+   # How to count steps/questions
+   "step_name": "Question",
+   "step_count": "auto",
+}
+
+test_states_0 = {
+    "0005": {
+        "action": "play_card", 
+        "card": ("2", "c"),
+        "next_state": "0010"
+    },
+    "0010" : {
+        "action": "play_card", 
+        "card": ("K", "c"),
+        "next_state": "0020"
+    },
+     "0020" : {
+        "action": "play_card", 
+        "card": ("J", "c"),
+        "next_state": "0030"
+    }, 
+     "0030" : {
+        "action": "play_question", 
+        "next_state": "0040"
+    }, 
+    "0040": {
+        "action": "play_card",
+        "card": ("8", "c"),
+        "next_state": "0050"
+    }, 
+     "0050": {
+        "action": "trick_question",
+        "next_state": "0060"
+    },
+     "0060": {
+        "action": "take_trick",
+        "next_state": "0070"
+    },   
+      "0070": {
+        "action": "play_card",
+        "card": ("Q", "c"),
+        "next_state": "0090"
+    }, 
+      "0090": {
+        "action": "play_card",
+        "card": ("9", "h"),
+        "next_state": "0100"
+    }, 
+     "0100": {
+        "action": "mc_question",
+        "prompt": "What is true about Player 3?",
+        "choices": ["They only have hearts", "They have no clubs", "They only have clubs higher than Q", "The nine is their only heart"],
+        "correct": "1",
+        "explanation": "Since player 3 was able to play a heart, they must be void in clubs",
+        "next_state": "0120"
+    }, 
+      "0120": {
+        "action": "play_card",
+        "card": ("4", "c"),
+        "next_state": "0130"
+    },
+       "0130": {
+        "action": "play_card",
+        "card": ("5", "c"),
+        "next_state": "0135"
+    },
+      "0135": {
+        "action": "trick_question",
+        "next_state": "0140"
+    },
+
+      "0140": {
+        "action": "take_trick",
+        "next_state": "0150"
+    },
+    "0150": {
+        "action": "play_card",
+        "card": ("10", "s"),
+        "next_state": "0160"
+    },
+      "0160": {
+        "action": "play_card",
+        "card": ("9", "s"),
+        "next_state": "0170"
+    },
+       "0170": {
+        "action": "play_question",
+        "next_state": "0180"
+    },
+    "0180": {
+        "action": "play_card",
+        "card": ('J', 's'),
+        "next_state": "0190"
+    },
+     "0190": {
+        "action": "play_card",
+        "card": ('6', 's'),
+        "next_state": "0200"
+    },
+      "0200": {
+        "action": "trick_question",
+        "next_state": "0210"
+    },
+      "0210": {
+        "action": "take_trick",
+        "next_state": "0220"
+    },
+     "0220": {
+        "action": "play_question",
+        "next_state": "0230"
+    },
+     "0230": {
+        "action": "play_card",
+        "card": ('8', 's'),
+        "next_state": "0240"
+    },
+      "0240": {
+        "action": "play_card",
+        "card": ('A', 's'),
+        "next_state": "0250"
+    },
+     "0250": {
+        "action": "mc_question",
+        "prompt": "Why is Player 1's playing the Ace of Spades risky?",
+        "choices": ["They risk taking the Queen of Spades", "They risk Player 2 shooting the moon", "The Ace should be saved until the end"],
+        "correct": "0",
+        "explanation": "If the Queen is played this round, Player 1 have to take it since the A will definetly win the round",
+        "next_state": "0260"
+    }, 
+     "0260": {
+        "action": "play_card",
+        "card": ('7', 'h'),
+        "next_state": "0270"
+    },
+     "0270": {
+        "action": "play_card",
+        "card": ('Q', 's'),
+        "next_state": "0280"
+    },
+     "0280": {
+        "action": "trick_question",
+        "next_state": "0290"
+    },
+     "0290": {
+        "action": "mc_question",
+        "prompt": "How many points does Player 1 get this round",
+        "choices": ["thirteen", "one", "two", "fourteen"],
+        "correct": "3",
+        "explanation": "thirteen points from the Queen and one from the heart",
+        "next_state": "0300"
+    }, 
+      "0300": {
+        "action": "mc_question",
+        "prompt": "TRUE or FALSE: Player 1 has a chance to shoot the moon",
+        "choices": ["TRUE", "FALSE"],
+        "correct": "1",
+        "explanation": "Since both Player 1 and Player 2 have points, no one can get all 26 points this round ",
+        "next_state": "0310"
+    }, 
+     "0310": {
+        "action": "take_trick",
+        "next_state": "done"
+    },
+    
+    
+    
+    
+}
+
+
+test_init_1 = {
    # The cards in your hand (probably 13)
    "your_hand": [("2", "c"), ("3", "c"), ("7", "c"), ("6", "d"), ("8", "d"), ("10", "d"), ("A", "d"), ("3", "h"), ("5", "h"), ("K", "h"), ("5", "s"), ("10", "s"), ("J", "s")],
    # The currently played cards
@@ -12,7 +200,7 @@ test_init = {
    # The current player (0 = you, then 1, 2, 3)
    "current_player": "0",
    # Mode
-   "mode": "test",
+   "mode": "test_1",
    # The start state
    "start_state": "0005",
    # How to count steps/questions
@@ -20,7 +208,7 @@ test_init = {
    "step_count": "auto",
 }
 
-test_states = {
+test_states_1 = {
     "0005": {
         "action": "play_question",
         "next_state": "0010"

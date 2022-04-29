@@ -28,17 +28,32 @@ def home():
 def learn():
    return render_template('game.html', init=learn_init)
 
-@app.route('/test')
-def test():
-   return render_template('game.html', init=test_init)
+@app.route('/choose_test')
+def choose_test():
+   return render_template('choose_test.html')
+
+@app.route('/test/<difficulty>')
+def test(difficulty):
+   if difficulty == "1": 
+      return render_template('game.html', init=test_init_1)
+   else:
+      return render_template('game.html', init=test_init_0)
 
 @app.route('/rules')
 def rules():
    return render_template('rules.html')
 
-@app.route('/quiz_end')
-def quiz_end():
-   return render_template('quiz_end.html', score = score)
+@app.route('/quiz_end/<difficulty>')
+def quiz_end(difficulty):
+   # resetting the score
+   global score
+   quiz_score = score
+   score = 0
+   if difficulty == "1":
+      num_questions = test_init_1["step_count"] 
+   else: 
+      num_questions = test_init_0["step_count"]
+   return render_template('quiz_end.html', quiz_score = quiz_score, num_questions= num_questions)
 
 # AJAX ROUTES
 def preprocess(state):
@@ -56,8 +71,10 @@ def fetch_state():
 
    if req["mode"] == "learn":
       return jsonify(preprocess(lesson_states[req["next_state"]]))
+   elif req["mode"] == "test_1":
+      return jsonify(preprocess(test_states_1[req["next_state"]]))
    else:
-      return jsonify(preprocess(test_states[req["next_state"]]))
+      return jsonify(preprocess(test_states_0[req["next_state"]]))
 
 @app.route('/submit_mc_answer', methods=["POST"])
 def submit_mc_answer():
@@ -105,6 +122,10 @@ def submit_trick_answer():
    if int(ans["response"]) == int(answer["correct"]):
       global score
       score = score + 1
+      answer["explanation"] = 'Correct!'
+   else:
+      answer["explanation"] = "Incorrect. Correct cards are green"
+
 
    return jsonify(answer)
 
@@ -147,15 +168,19 @@ def submit_play_answer():
             break
       answer["correct"] = list(map(lambda card : can_play(card, led_suit, void), hand))
 
+   isRight = True
    for x in range(len(answer["correct"])):
-      if answer["correct"][x] ==  ans["response"][x]:
-         isRight = True
-      else:
+      if answer["correct"][x] !=  ans["response"][x]:
          isRight = False
+
 
    if isRight:
       global score
       score  =  score + 1
+      answer["explanation"] = "Correct!"
+   else:
+      answer["explanation"] = "Incorrect. Correct cards are green"
+   
 
    return jsonify(answer)
 
@@ -163,6 +188,7 @@ def submit_play_answer():
 if __name__ == '__main__':
    # initialize step counts
    learn_init["step_count"] = str(countSteps(lesson_states, learn_init["start_state"]))
-   test_init["step_count"]  = str(countSteps(test_states,   test_init["start_state"]))
+   test_init_1["step_count"]  = str(countSteps(test_states_1,   test_init_1["start_state"]))
+   test_init_0["step_count"]  = str(countSteps(test_states_0,   test_init_0["start_state"]))
 
    app.run(debug = True)
