@@ -24,6 +24,24 @@ learn_init = {
 # format:
 # action_name (parameter_names, ...)
 
+# set_hand (hand)
+# re-deals the user with the given hand
+
+# set_played (played_cards)
+# sets the currently played cards
+
+# set_points (points)
+# sets the current points
+
+# set_current_player (current_player)
+# sets the current_player field
+
+# set_hearts_broken (hearts_broken)
+# sets hearts_broken
+
+# clear_game ()
+# equivalent to set_hand([]), set_played([null, null, null, null]), set_points([0,0,0,0]), set_current_player(0), set_hearts_broken(false)
+
 # set_text (text)
 # sets the display text to "text"
 
@@ -38,9 +56,6 @@ learn_init = {
 
 # play_card (card)
 # makes the current_player play the given card, and advances current_player 
-
-# set_hand (hand)
-# re-deals the user with the given hand
 
 # take_trick ()
 # gives the current trick to whoever won, and updates their points
@@ -391,5 +406,5 @@ lesson_states = {
    "700": { # dummy state that makes step counter correct
       "action": "step",
       "next_state": "done"
-   }, 
+   }
 }

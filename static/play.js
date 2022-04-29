@@ -28,6 +28,7 @@ function playerName(index) {
 let card_objects = []
 let cards_animating = 0
 let next_state_deferred = false
+let global_autoanim = true
 
 const card_width = 70.27
 const card_height = 100
@@ -189,14 +190,14 @@ function moveCard(card_obj, completion) {
 
 function drawCards(hand_highlight=null, played_highlight=null) {
     card_objects.forEach(function(card_obj, _) {
-        if (card_obj.autoanim) card_obj.start = card_obj.div.offset()
+        if (card_obj.autoanim && global_autoanim) card_obj.start = card_obj.div.offset()
     })
 
     _displayYourHand(hand_highlight)
     _displayPlayedCards(played_highlight)
 
     card_objects.forEach(function(card_obj, _) {
-        if (card_obj.autoanim) moveCard(card_obj, cardMoveComplete)
+        if (card_obj.autoanim && global_autoanim) moveCard(card_obj, cardMoveComplete)
     })
 }
 
@@ -381,20 +382,6 @@ function playCardState() {
     nextState()
 }
 
-function setHandState() {
-    your_hand.forEach(function(card, idx) {
-        deleteCardObject(card[0], card[1])
-    })
-
-    your_hand = state.hand
-
-    current_player_tmp = current_player
-    current_player = 0 // animate cards as dealt to user
-    drawCards()
-    current_player = current_player_tmp
-    nextState()
-}
-
 function continueState(){
     displayContinueButton()
 }
@@ -515,16 +502,84 @@ function displayQuestionStatus(){
     $("#result").text(step)
 }
 
+function clearHand() {
+    your_hand.forEach(function(card, _) {
+        deleteCardObject(card[0], card[1])
+    })
+    your_hand = []
+}
+
+function setHandState() {
+    clearHand()
+    your_hand = state.hand
+
+    current_player_tmp = current_player
+    current_player = 0 // animate cards as dealt to user
+    drawCards()
+    current_player = current_player_tmp
+    nextState()
+}
+
+function clearPlayedCards() {
+    played_cards.forEach(function(card, _) {
+        if (card != null) {
+            deleteCardObject(card[0], card[1])
+        }
+    })
+    played_cards = [null, null, null, null]
+}
+
+function setPlayedState() {
+    clearPlayedCards()
+
+    played_cards = state.played_cards
+    global_autoanim = false
+    drawCards()
+    global_autoanim = true
+    nextState()
+}
+
+function setPointsState() {
+    points = state.points
+    displayPoints()
+    nextState()
+}
+
+function setCurrentPlayerState() {
+    current_player = parseInt(state.current_player)
+    nextState()
+}
+
+function setHeartsBrokenState() {
+    hearts_broken = state.hearts_broken
+    nextState()
+}
+
+function clearGameState() {
+    clearHand()
+    clearPlayedCards()
+    points = [0, 0, 0, 0]
+    current_player = 0
+    hearts_broken = false
+
+    nextState()
+}
+
 /*** STATE FLOW ***/
 
 function processState() {
     next_state = state.next_state
     switch (state.action) {
+        case "set_hand": setHandState(); break;
+        case "set_played": setPlayedState(); break;
+        case "set_points": setPointsState(); break;
+        case "set_current_player": setCurrentPlayerState(); break;
+        case "set_hearts_broken": setHeartsBrokenState(); break;
+        case "clear_game": clearGameState(); break;
         case "set_text": setTextState(); break;
         case "clear_text": clearTextState(); break;
         case "click_card": clickCardState(); break;
         case "play_card": playCardState(); break;
-        case "set_hand": setHandState(); break;
         case "continue": continueState(); break; 
         case "continue_step": continueStepState(); break;
         case "step": stepState(); break;
