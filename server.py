@@ -61,6 +61,9 @@ def rules():
 def quiz_end(difficulty):
    # resetting the score
    quiz_score = score
+   quiz_t_score = trick_score
+   quiz_p_score = play_score
+   quiz_mc_score = mc_score
    reset_score()
    if difficulty == "1":
       num_questions = test_init_1["step_count"] 
@@ -69,17 +72,17 @@ def quiz_end(difficulty):
 
    if quiz_score == num_questions:
       grade = "You got an A+ ! You're ready to kill it in Hearts!"
-   elif (.9 * float(num_questions)) <= quiz_score < num_questions:
+   elif (.9 * float(num_questions)) <= float(quiz_score) < float(num_questions):
       grade = "You got an A ! You're ready to go out and play!"
-   elif (.8 * float(num_questions))<= quiz_score <num_questions:
+   elif (.8 * float(num_questions))<= float(quiz_score) < float(num_questions):
       grade = "You got a B ! You're ready to jump in a game of Hearts, but you might want some seasoned players to help along the way!"
-   elif(.7 * float(num_questions))<= quiz_score <num_questions:
+   elif(.7 * float(num_questions))<= float(quiz_score) <float(num_questions):
       grade = "You got a C ! Not bad, but you might want to brush up on the rules."
-   elif(.6 * float(num_questions))<= quiz_score <num_questions:
+   elif(.6 * float(num_questions))<= float(quiz_score) <float(num_questions):
       grade = "You got a D ! Don't feel bad, try again after brushing up on the rules."
    else:
       grade = "You failed the quiz, have you visited the Learn page yet?"
-   return render_template('quiz_end.html', quiz_score = quiz_score, num_questions= num_questions, trick_score = trick_score, play_score = play_score, mc_score = mc_score, grade = grade)
+   return render_template('quiz_end.html', quiz_score = quiz_score, num_questions= num_questions, quiz_t_score = quiz_t_score, quiz_p_score = quiz_p_score, quiz_mc_score = quiz_mc_score, grade = grade)
 
 # AJAX ROUTES
 def preprocess(state):

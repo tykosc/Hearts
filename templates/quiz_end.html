@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<div class = quiz_end>
+<div class = quiz_end style="color:white">
     <b>You have reached the end of the quiz!</b>
     <br>
     <h1>Total Score: {{quiz_score}} / {{num_questions}}</h1>
@@ -11,19 +11,19 @@
     <br><br>
     <b>Point Breakdown:</b>
     <br>
-    <b>Play Points: {{play_score}}</b>
+    <b>Play Points: {{quiz_p_score}}</b>
     <br>
-    You answered {{play_score}} question(s) correctly pertaining to what card(s) in your hand can be played.
+    You answered {{quiz_p_score}} question(s) correctly pertaining to what card(s) in your hand can be played.
     High points in this category indicates that you can successfully participate in a game of Hearts!
     <br> 
-    <b>Trick Points: {{trick_score}}</b>
+    <b>Trick Points: {{quiz_t_score}}</b>
     <br>
     You answered {{trick_score}} question(s) correctly pertaining to what card 'takes the trick' (wins the round).
     High points in this category indicates that you have a good understanding of the objective in a game of Hearts. 
     <br>
-    <b> Strategy Points: {{mc_score}} </b>
+    <b> Strategy Points: {{quiz_mc_score}} </b>
     <br>
-    You answered {{mc_score}} multiple choice question(s) correctly pertaining to strategy in a game of Hearts.
+    You answered {{quiz_mc_score}} multiple choice question(s) correctly pertaining to strategy in a game of Hearts.
     High points in this category indicates that you are on the path to becoming a skilled Hearts player!
 </div>
 
