@@ -1,3 +1,7 @@
+body {
+    background-image: radial-gradient(#006600, #003300);
+}
+
 .selectable {
     cursor: pointer;
     border: solid black 1px;
@@ -39,6 +43,7 @@
 .main-title{
     font-size: 30px;
     text-align: center;
+    color: white;
 }
 
 .main-card-image{
@@ -57,4 +62,14 @@
 }
 #step-row {
     margin-bottom: 5px;
+}
+
+
+.navbar-nav .nav-link {
+    color: white;
+}
+
+.navbar-custom .navbar-brand,
+.navbar-custom .navbar-text {
+    color: white;
 }
