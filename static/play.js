@@ -361,13 +361,13 @@ function clearTextState() {
     nextState()
 }
 
-function clickCardSelector (card, idx) {
+function clickCardSelector (card, _) {
     if (card[0] == state.card[0] && card[1] == state.card[1]) return "selectable"
     return ""
 }
 
 function clickCardState() {
-    drawCards(clickCardSelector, null)
+    drawCards(state.show_select ? clickCardSelector : selectableAllSelector, null)
 
     cardInHandCallback = card_div => {
         // Move to the next state if the card selected is the indicated card

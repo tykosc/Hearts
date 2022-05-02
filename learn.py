@@ -48,8 +48,9 @@ learn_init = {
 # clear_text ()
 # clears the display text
 
-# click_card (card)
+# click_card (card, show_select)
 # waits for the given card to be clicked
+# if show_select is true, show only the given card as selectable. otherwise shows all cards in hand as selectable
 
 # continue ()
 # adds a continue button and waits for it to be clicked
@@ -72,6 +73,7 @@ lesson_states = {
    "10": {
       "action": "click_card",
       "card": ("2", "c"),
+      "show_select": True,
       "next_state": "15",
    },
    "15": {
@@ -146,6 +148,7 @@ lesson_states = {
    "160": {
       "action": "click_card",
       "card": ("J", "s"),
+      "show_select": True,
       "next_state": "165",
    },
    "165": {
@@ -230,6 +233,7 @@ lesson_states = {
     "350": {
       "action": "click_card",
       "card": ("4", "d"),
+      "show_select": True,
       "next_state": "355",
    },
    "355": {
@@ -296,6 +300,7 @@ lesson_states = {
     "480": {
       "action": "click_card",
       "card": ("Q", "s"),
+      "show_select": True,
       "next_state": "485",
    },
    "485": {
@@ -406,6 +411,7 @@ lesson_states = {
    "700": {
       "action": "click_card",
       "card": ("3", "d"),
+      "show_select": False,
       "next_state": "710",
    },
    "710": {
@@ -462,6 +468,7 @@ lesson_states = {
    "810": {
       "action": "click_card",
       "card": ("8", "s"),
+      "show_select": False,
       "next_state": "820"
    },
    "820": {
@@ -513,6 +520,7 @@ lesson_states = {
    "920": {
       "action": "click_card",
       "card": ("A", "h"),
+      "show_select": True,
       "next_state": "930"
    },
    "930": {
