@@ -93,7 +93,7 @@ function getCard(rank, suit, handler) {
     card_object.div.click(handler)
 
     // Clear highlight classes
-    card_object.div.removeClass("highlight correct incorrect")
+    card_object.div.removeClass("highlight correct incorrect lowlight selectable")
 
     return card_object.div
 }
@@ -303,6 +303,9 @@ function trickQuestionHighlightSelector (answer, card, idx) {
     return ""
 }
 
+function selectableAllSelector(card, idx) { return "selectable" }
+function lowlightAllSelector(card, idx) { return "lowlight" }
+
 // Draws the take trick question in using answer if non-null to mark correct response
 function drawTakeTrickQuestion(answer=null) {
     $("#sidebar").empty().text("Click the card that takes this trick.")
@@ -313,6 +316,9 @@ function drawTakeTrickQuestion(answer=null) {
         // displayPlayedCards((card, idx) => trickQuestionHighlightSelector(answer, card, idx))
         drawCards(null, (card, idx) => trickQuestionHighlightSelector(answer, card, idx))
     }
+    else {
+        drawCards(lowlightAllSelector, selectableAllSelector)
+    }
 }
 
 function legalPlayQuestionAnswerSelector(answer, card, idx) {
@@ -322,7 +328,7 @@ function legalPlayQuestionAnswerSelector(answer, card, idx) {
 }
 
 function legalPlayQuestionResponseSelector(card, idx) {
-    return question.response[idx] ? "highlight" : ""
+    return question.response[idx] ? "selectable highlight" : "selectable"
 }
 
 // Draws the legal play question in using answer if non-null to mark correct response
@@ -331,13 +337,13 @@ function drawLegalPlayQuestion(answer=null) {
     if (answer != null) {
         // displayYourHand((card, idx) => legalPlayQuestionAnswerSelector(answer, card, idx))
         
-        drawCards((card, idx) => legalPlayQuestionAnswerSelector(answer, card, idx))
+        drawCards((card, idx) => legalPlayQuestionAnswerSelector(answer, card, idx), null)
         displayContinueButton(true)
         $("#sidebar").append($("<div>").text(answer.explanation))
     }
     else {
         // displayYourHand(legalPlayQuestionResponseSelector)
-        drawCards(legalPlayQuestionResponseSelector)
+        drawCards(legalPlayQuestionResponseSelector, lowlightAllSelector)
         displaySubmitButton(legalPlayResponse)
     }
 }
@@ -355,7 +361,14 @@ function clearTextState() {
     nextState()
 }
 
+function clickCardSelector (card, idx) {
+    if (card[0] == state.card[0] && card[1] == state.card[1]) return "selectable"
+    return ""
+}
+
 function clickCardState() {
+    drawCards(clickCardSelector, null)
+
     cardInHandCallback = card_div => {
         // Move to the next state if the card selected is the indicated card
         if (state.card[0] == card_div.data("rank") && state.card[1] == card_div.data("suit")) nextState();

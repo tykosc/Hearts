@@ -1,3 +1,7 @@
+.selectable {
+    cursor: pointer;
+    border: solid black 1px;
+}
 .correct {
     border: solid green 2px;
 }
@@ -8,6 +12,10 @@
 
 .highlight {
     border: solid rgb(195, 195, 90) 2px;
+}
+
+.lowlight {
+    filter: brightness(90%)
 }
 
 .correct-text {
@@ -21,7 +29,6 @@
 .card-in-hand{
     padding: 0;
     height: 100px;
-    cursor: pointer;
     object-fit: contain;
 }
 
