@@ -70,7 +70,7 @@ def quiz_end(difficulty):
    else: 
       num_questions = test_init_0["step_count"]
 
-   if quiz_score == num_questions:
+   if int(quiz_score) == int(num_questions):
       grade = "You got an A+ ! You're ready to kill it in Hearts!"
    elif (.9 * float(num_questions)) <= float(quiz_score) < float(num_questions):
       grade = "You got an A ! You're ready to go out and play!"
