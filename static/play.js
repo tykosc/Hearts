@@ -269,7 +269,7 @@ function drawMultipleChoiceQuestion(answer=null) {
 
     state.choices.forEach(function(choice, index) {
         let choice_div = $("<div>")
-            .append($("<button>").text(letters[index]))
+            .append($("<button>").text(letters[index]).addClass("mc"))
         if (answer == null) {
             choice_div.click(() => multipleChoiceResponse(index))
                 .append($("<span>").text(choice))
@@ -503,6 +503,7 @@ function testMeState(){
 function displayTestMeButton(){
     b1 = $("<button>")
     .text("Test Me! ")
+    .addClass("major")
     .click(function(){
         window.location.href = "/choose_test" 
     })
