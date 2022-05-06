@@ -88,9 +88,6 @@ button.mc {
     padding: 20px;
     font-size: larger;
 }
-#sidebar-col{
-    border-right: black solid 1px;
-}
 #step-row {
     margin-bottom: 5px;
 }
