@@ -4,6 +4,7 @@
 let your_hand = _init.your_hand                         // List of cards currently in your hand
 let played_cards = _init.played_cards                   // For each player, a card if they have played one, otherwise null
 let points = _init.points                               // For each player, their total points this round
+let points_changed = [false, false, false, false]       // Which points changed this trick
 let hearts_broken = _init.hearts_broken                 // Whether or not hearts have been broken
 let current_player = parseInt(_init.current_player)     // The index of the current player (or who led the current trick if all four cards have been played)
 let next_state = _init.start_state                      // The id of the next state
@@ -226,8 +227,14 @@ function displayTrickTaken(trick_objects, taken_by) {
     })
 }
 
+function wiggleAnimation(obj, i, first=true) {
+    if (i < 0) return
+    let dist = (first || i == 0 ? 1 : 2) * 5 * (i % 2 == 0 ? -1 : 1)
+    obj.animate({left: `+=${dist}`}, 50, () => wiggleAnimation(obj, i-1, false))
+}
+
 // Displays each player's current points
-function displayPoints() {
+function displayPoints(animate=false) {
 
     points.forEach(function(pt, idx) {
         $(`#points_${idx}`).empty()
@@ -235,6 +242,11 @@ function displayPoints() {
             .append($("<span>").text(pt))
 
         $(`#points_${idx}`).append(points_row)
+
+        if (animate && points_changed[idx]) {
+            points_row.css('position', 'relative')
+            wiggleAnimation(points_row, 3)
+        }
     })
 }
 
@@ -441,12 +453,16 @@ function takeTrickState() {
     // player that took the trick has the lead
     current_player = best_idx
     points[current_player] += trick_points
-    if (points[current_player] == 26) {
+    if (trick_points > 0 && points[current_player] == 26) {
         points = [26, 26, 26, 26]
         points[current_player] = 0
+        points_changed = [true, true, true, true]
+    }
+    else {
+        points_changed = [false, false, false, false]
+        if (trick_points > 0) points_changed[current_player] = true
     }
 
-    displayPoints()
     trick_objects = prepDisplayTrickTaken(trick_taken, best_idx)
     drawCards()
     displayTrickTaken(trick_objects, best_idx)
@@ -623,6 +639,7 @@ function cleanUpState() {
     switch (state.action) {
         case "take_trick":
             played_cards = [null, null, null, null]
+            displayPoints(true)
             drawCards()
             break;
         case "mc_question":
