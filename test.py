@@ -4,7 +4,7 @@ test_init_0 = {
 
     # The cards in your hand (probably 13)
 
-    "your_hand": [('2', 's'),('3', 's'),('8', 's'),('J', 's'),('5', 's'), ('4', 'c'), ('8', 'c'), ('K', 'd'), ('3', 'd'), ('A', 'h'),('5', 'h'),('8', 'h'),('6', 'h')],
+    "your_hand": [('2', 's'),('3', 's'),('5', 's'),('8', 's'),('J', 's'), ('4', 'c'), ('8', 'c'), ('K', 'd'), ('3', 'd'), ('A', 'h'),('5', 'h'),('8', 'h'),('6', 'h')],
 
    # The currently played cards
    "played_cards": [None, None, None, None],
