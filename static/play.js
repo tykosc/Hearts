@@ -322,7 +322,12 @@ function lowlightAllSelector(card, idx) { return "lowlight" }
 function drawTakeTrickQuestion(answer=null) {
     $("#sidebar").empty().text("Click the card that takes this trick.")
     if (answer != null) {
-        $("#sidebar").append($("<div>").text(answer.explanation))
+        if (answer.explanation == "Correct!") {
+            $("#sidebar").append($("<div>").text(answer.explanation).addClass("correct-text"))
+        }
+        else {
+            $("#sidebar").append($("<div>").text(answer.explanation).addClass("incorrect-text"))
+        }
         displayContinueButton(true)
 
         // displayPlayedCards((card, idx) => trickQuestionHighlightSelector(answer, card, idx))
@@ -351,7 +356,12 @@ function drawLegalPlayQuestion(answer=null) {
         
         drawCards((card, idx) => legalPlayQuestionAnswerSelector(answer, card, idx), null)
         displayContinueButton(true)
-        $("#sidebar").append($("<div>").text(answer.explanation))
+        if (answer.explanation == "Correct!") {
+            $("#sidebar").append($("<div>").text(answer.explanation).addClass("correct-text"))
+        }
+        else {
+            $("#sidebar").append($("<div>").text(answer.explanation).addClass("incorrect-text"))
+        }
     }
     else {
         // displayYourHand(legalPlayQuestionResponseSelector)
