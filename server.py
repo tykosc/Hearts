@@ -157,7 +157,7 @@ def submit_trick_answer():
       trick_score = trick_score + 1
       answer["explanation"] = 'Correct!'
    else:
-      answer["explanation"] = "Incorrect. Correct cards are green"
+      answer["explanation"] = "Incorrect. Correct cards are green."
 
 
    return jsonify(answer)
@@ -214,7 +214,7 @@ def submit_play_answer():
       play_score = play_score + 1
       answer["explanation"] = "Correct!"
    else:
-      answer["explanation"] = "Incorrect. Correct cards are green"
+      answer["explanation"] = "Incorrect. Correct cards are green."
    
 
    return jsonify(answer)

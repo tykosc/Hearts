@@ -69,9 +69,9 @@ test_states_0 = {
      "0100": {
         "action": "mc_question",
         "prompt": "What is true about Player 3?",
-        "choices": ["They only have hearts", "They have no clubs", "They only have clubs higher than Q", "The nine is their only heart"],
+        "choices": ["They only have hearts.", "They have no clubs.", "They only have clubs higher than Q.", "The nine is their only heart."],
         "correct": "1",
-        "explanation": "Since player 3 was able to play a heart, they must be void in clubs",
+        "explanation": "Since player 3 was able to play a heart, they must be void in clubs.",
         "next_state": "0120"
     }, 
       "0120": {
@@ -142,9 +142,9 @@ test_states_0 = {
      "0250": {
         "action": "mc_question",
         "prompt": "Why is Player 1's playing the Ace of Spades risky?",
-        "choices": ["They risk taking the Queen of Spades", "They risk Player 2 shooting the moon", "The Ace should be saved until the end"],
+        "choices": ["They risk taking the Queen of Spades.", "They risk Player 2 shooting the moon.", "The Ace should be saved until the end."],
         "correct": "0",
-        "explanation": "If the Queen is played this round, Player 1 will have to take it since the Ace will definetly win the round",
+        "explanation": "If the Queen is played this round, Player 1 will have to take it since the Ace will definetly win the round.",
         "next_state": "0260"
     }, 
      "0260": {
@@ -163,10 +163,10 @@ test_states_0 = {
     },
      "0290": {
         "action": "mc_question",
-        "prompt": "How many points does Player 1 get this round",
+        "prompt": "How many points does Player 1 get this round?",
         "choices": ["thirteen", "one", "two", "fourteen"],
         "correct": "3",
-        "explanation": "thirteen points from the Queen and one from the heart",
+        "explanation": "Thirteen points from the Queen of Spades and one from the 7 of Hearts.",
         "next_state": "0300"
     }, 
       "0300": {
@@ -174,7 +174,7 @@ test_states_0 = {
         "prompt": "TRUE or FALSE: Player 1 has a chance to shoot the moon",
         "choices": ["TRUE", "FALSE"],
         "correct": "1",
-        "explanation": "Since both Player 1 and Player 2 have points, no one can get all 26 points this round ",
+        "explanation": "Since both Player 1 and Player 2 have points, no one can get all 26 points this round.",
         "next_state": "0310"
     }, 
      "0310": {

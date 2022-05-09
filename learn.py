@@ -142,7 +142,7 @@ lesson_states = {
    },
    "150": {
       "action": "set_text",
-      "text": "Now you have to play. Because spades (♠) were led, you must follow suit by playing a spade. Play your jack (J♠)",
+      "text": "Now you have to play. Because spades (♠) were led, you must follow suit by playing a spade. Play your jack (J♠).",
       "next_state": "160"
    },
    "160": {
@@ -227,7 +227,7 @@ lesson_states = {
    },
      "340": {
       "action": "set_text",
-      "text": "It’s your lead! Try leading the four of diamonds (4♦)",
+      "text": "It’s your lead! Try leading the four of diamonds (4♦).",
       "next_state": "350",
    },
     "350": {
