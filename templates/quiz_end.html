@@ -9,22 +9,36 @@
     <br>
     <b>{{grade}}</b>
     <br><br>
-    <b>Point Breakdown:</b>
+    <b style="border-bottom: solid white 1px;">Point Breakdown</b>
+    <br>
     <br>
     <b>Play Points: {{quiz_p_score}}</b>
     <br>
     You answered {{quiz_p_score}} question(s) correctly pertaining to what card(s) in your hand can be played.
     High points in this category indicates that you can successfully participate in a game of Hearts!
     <br> 
+    <br>
     <b>Trick Points: {{quiz_t_score}}</b>
     <br>
     You answered {{trick_score}} question(s) correctly pertaining to what card 'takes the trick' (wins the round).
     High points in this category indicates that you have a good understanding of the objective in a game of Hearts. 
     <br>
+    <br>
     <b> Strategy Points: {{quiz_mc_score}} </b>
     <br>
     You answered {{quiz_mc_score}} multiple choice question(s) correctly pertaining to strategy in a game of Hearts.
     High points in this category indicates that you are on the path to becoming a skilled Hearts player!
+    <br>
+    <br>
+    <br>
+    <a href="/"><button>Return Home</button></a>
 </div>
+
+<script>
+    if (window.location.pathname=="/quiz_end/0"){
+        $(".quiz_end").append(`<a href="/test/1"><button>Take Harder Quiz</button></a>`)
+    }
+    $(".quiz_end").append(`<a href="/learn"><button>Learn Again</button></a>`)
+</script>
 
 {% endblock %}
