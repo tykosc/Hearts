@@ -108,3 +108,9 @@ button.mc {
 #sidebar{
     font-size: large;
 }
+
+.quizendbuttons{
+    width: 30%;
+    display: block;
+    margin: 0 auto;
+}

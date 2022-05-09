@@ -31,14 +31,16 @@
     <br>
     <br>
     <br>
-    <a href="/"><button>Return Home</button></a>
+    <a href="/"><button class = "quizendbuttons">Return Home</button></a>
+    <br>
 </div>
 
 <script>
     if (window.location.pathname=="/quiz_end/0"){
-        $(".quiz_end").append(`<a href="/test/1"><button>Take Harder Quiz</button></a>`)
+        $(".quiz_end").append(`<a href="/test/1"><button class = 'quizendbuttons' >Take Harder Quiz</button></a>`)
+        $(".quiz_end").append(`<br>`)
     }
-    $(".quiz_end").append(`<a href="/learn"><button>Learn Again</button></a>`)
+    $(".quiz_end").append(`<a href="/learn"><button class = 'quizendbuttons'>Learn Again</button></a>`)
 </script>
 
 {% endblock %}
