@@ -14,8 +14,8 @@ button {
     margin-left: auto;
     height: 36px;
     border-radius: 18px;
-    background-color: lightgray;
-    color: black;
+    background-color: #5a5c5b;
+    color: white;
     border: solid black 2px;
     margin-top: 5px;
     margin-bottom: 5px;
@@ -92,7 +92,6 @@ button.mc {
     margin-bottom: 5px;
 }
 
-
 .navbar-nav .nav-link {
     color: white;
 }
@@ -100,4 +99,12 @@ button.mc {
 .navbar-custom .navbar-brand,
 .navbar-custom .navbar-text {
     color: white;
+}
+
+#result{
+    font-weight: bold;
+}
+
+#sidebar{
+    font-size: large;
 }

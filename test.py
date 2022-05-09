@@ -144,7 +144,7 @@ test_states_0 = {
         "prompt": "Why is Player 1's playing the Ace of Spades risky?",
         "choices": ["They risk taking the Queen of Spades", "They risk Player 2 shooting the moon", "The Ace should be saved until the end"],
         "correct": "0",
-        "explanation": "If the Queen is played this round, Player 1 have to take it since the A will definetly win the round",
+        "explanation": "If the Queen is played this round, Player 1 will have to take it since the Ace will definetly win the round",
         "next_state": "0260"
     }, 
      "0260": {

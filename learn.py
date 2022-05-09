@@ -201,7 +201,7 @@ lesson_states = {
    },
     "280": {
       "action": "set_text",
-      "text": "It looks like you took a heart in that last trick.In Hearts, you want to avoid taking points.Each heart is worth one point.",
+      "text": "It looks like you took a heart in that last trick. In Hearts, you want to avoid taking points. Each heart is worth one point.",
       "next_state": "290"
    },
    "290": {
@@ -214,7 +214,7 @@ lesson_states = {
    },
     "310": {
       "action": "set_text",
-      "text": "The other card that gives points is the queen of spades (Q♠) which is worth 13 points.You have the queen in your hand, so let’s see if we can make someone else take it.",
+      "text": "The other card that gives points is the queen of spades (Q♠) which is worth 13 points. You have the queen in your hand, so let’s see if we can make someone else take it.",
       "next_state": "320",
    },
    "320": {
@@ -262,7 +262,7 @@ lesson_states = {
    },
    "400": {
       "action": "set_text",
-      "text": "Each player, moving clockwise, plays a card. Player 1 has the highest card, so they take the trick",
+      "text": "Each player, moving clockwise, plays a card. Player 1 has the highest card, so they take the trick.",
       "next_state": "410",
    },
     "410": {
@@ -294,7 +294,7 @@ lesson_states = {
    }, 
     "470": {
       "action": "set_text",
-      "text": "Player 1 led diamonds again. But the four was your last diamond, so you are now void! You should play the queen of spades.",
+      "text": "Player 1 led diamonds again. But the four was your last diamond, so you are now void! You can now play any card, but you should play the queen of spades.",
       "next_state": "480",
    }, 
     "480": {
@@ -340,7 +340,7 @@ lesson_states = {
    },
      "570": {
       "action": "set_text", 
-      "text": "After each round, you add your points to your points from previous rounds. The game ends when any player reaches some point threshold at the end of a round (e.g., 50 points). Then, the player with the fewest points wins!",
+      "text": "The maximum points any player can get in one round is 26. Points are summed after each round, and the player with the lowest number of points when another player reaches 100 points wins!",
       "next_state": "580"
    },
      "580": {
@@ -438,7 +438,7 @@ lesson_states = {
    },
    "760": {
       "action": "set_text",
-      "text": 'Hearts cannot be led until hearts have been "broken." Hearts are broken once someone has played a card on trick. Playing the queen of spades does not count as breaking hearts.',
+      "text": 'Hearts cannot be led until hearts have been "broken." Hearts are broken once someone has played a heart on trick. Playing the queen of spades does not count as breaking hearts.',
       "next_state": "765"
    },
    "765": {
