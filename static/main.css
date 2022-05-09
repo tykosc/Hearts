@@ -54,11 +54,11 @@ button.mc {
 }
 
 .correct-text {
-    color: green;
+    color: rgb(0, 255, 0);
 }
 
 .incorrect-text {
-    color: red;
+    color: rgb(255, 0, 0);
 }
 
 .card-in-hand{
